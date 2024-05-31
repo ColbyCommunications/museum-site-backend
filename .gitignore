@@ -6,6 +6,7 @@
 # /web/wp-content/*
 /web/wp-content/themes/*
 !/web/wp-content/themes/README.md
+!/web/wp-content/themes/twentytwentythree
 !/web/wp-content/plugins/index.php
 /web/wp-content/plugins/*
 !/web/wp-content/plugins/index.php

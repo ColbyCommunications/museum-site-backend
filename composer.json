@@ -23,8 +23,7 @@
         "wpackagist-plugin/disable-comments": "2.4.5",
         "wpackagist-plugin/advanced-gutenberg": "3.2.1",
         "colbycommunications/capabilities-pro": "2.12.0",
-        "wpackagist-plugin/rest-api-blocks": "1.0.2",
-        "wpackagist-theme/twentytwentythree": "1.4"
+        "wpackagist-plugin/rest-api-blocks": "1.0.2"
     },
     "authors": [
         {
