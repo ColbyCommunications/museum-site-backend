@@ -237,6 +237,19 @@ function my_acf_init() {
         'keywords'			  => array( 'media', 'context', 'carousel', 'layout' ),
       )
     );
+    
+    // register media context
+    acf_register_block(
+      array(
+        'name'				    => 'media-context2',
+        'title'				    => __('Media Context2'),
+        'description'	    => __('Image with supporting context featuring an optional carousel for numerous items.'),
+        'render_callback'	=> 'my_acf_block_render_callback',
+        'category'			  => 'layout',
+        'icon'				    => 'block-default',
+        'keywords'			  => array( 'media', 'context', 'carousel', 'layout' ),
+      )
+    );
 
     // register toggle context
     acf_register_block(
