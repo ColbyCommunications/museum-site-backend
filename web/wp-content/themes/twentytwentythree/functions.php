@@ -237,19 +237,6 @@ function my_acf_init() {
         'keywords'			  => array( 'media', 'context', 'carousel', 'layout' ),
       )
     );
-    
-    // register media context
-    acf_register_block(
-      array(
-        'name'				    => 'media-context2',
-        'title'				    => __('Media Context2'),
-        'description'	    => __('Image with supporting context featuring an optional carousel for numerous items.'),
-        'render_callback'	=> 'my_acf_block_render_callback',
-        'category'			  => 'layout',
-        'icon'				    => 'block-default',
-        'keywords'			  => array( 'media', 'context', 'carousel', 'layout' ),
-      )
-    );
 
     // register toggle context
     acf_register_block(
@@ -447,3 +434,16 @@ function get_breadcrumbs( $data ) {
 
   return $breadcrumbs;
 }
+
+function my_custom_rest_cors() {
+  remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
+  add_filter( 'rest_pre_serve_request', function( $value ) {
+    header( 'Access-Control-Allow-Origin: *' );
+    header( 'Access-Control-Allow-Methods: GET' );
+    header( 'Access-Control-Allow-Credentials: true' );
+    header( 'Access-Control-Expose-Headers: Link', false );
+
+    return $value;
+  } );
+}
+add_action( 'rest_api_init', 'my_custom_rest_cors', 15 );
