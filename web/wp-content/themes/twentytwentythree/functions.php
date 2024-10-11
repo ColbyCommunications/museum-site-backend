@@ -192,6 +192,32 @@ function register_taxonomies() {
       ),
     )
   );
+
+  register_taxonomy(
+    'type',
+    array('exhibitions'),
+    array(
+      'hierarchical'      => true,
+      'show_ui'           => true,
+      'show_in_rest'      => true,
+      'show_admin_column' => true,
+      'query_var'         => true,
+      'public'            => true,
+      'show_tagcloud'     => false,
+      'capabilities'      => array(
+        'manage_terms' => 'manage_options',
+        'edit_terms'   => 'manage_options',
+        'delete_terms' => 'manage_options',
+        'assign_terms' => 'manage_options',
+      ),
+      'labels'            => array(
+        'name'          => __( 'Types' ),
+        'singular_name' => __( 'Type' ),
+        'add_new_item'  => __( 'Add New Type' ),
+        'menu_name'     => __( 'Types' ),
+      ),
+    )
+  );
 }
 
 function my_acf_init() {
@@ -287,6 +313,19 @@ function my_acf_init() {
         'category'			  => 'layout',
         'icon'				    => 'block-default',
         'keywords'			  => array( 'ordered', 'list', 'section' ),
+      )
+    );
+
+    // register the video block
+    acf_register_block(
+      array(
+        'name'				=> 'video',
+        'title'				=> __('Video'),
+        'description'		=> __('Inset video component for standalone instances.'),
+        'render_callback'	=> 'my_acf_block_render_callback',
+        'category'			=> 'layout',
+        'icon'				=> 'block-default',
+        'keywords'        => array( 'media', 'video' ),
       )
     );
   }
