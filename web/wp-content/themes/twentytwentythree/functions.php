@@ -194,7 +194,7 @@ function register_taxonomies() {
   );
 
   register_taxonomy(
-    'type',
+    'variant',
     array('exhibitions'),
     array(
       'hierarchical'      => true,
@@ -211,10 +211,10 @@ function register_taxonomies() {
         'assign_terms' => 'manage_options',
       ),
       'labels'            => array(
-        'name'          => __( 'Types' ),
-        'singular_name' => __( 'Type' ),
-        'add_new_item'  => __( 'Add New Type' ),
-        'menu_name'     => __( 'Types' ),
+        'name'          => __( 'Variants' ),
+        'singular_name' => __( 'Variant' ),
+        'add_new_item'  => __( 'Add New Variant' ),
+        'menu_name'     => __( 'Variants' ),
       ),
     )
   );
