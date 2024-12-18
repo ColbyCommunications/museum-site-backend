@@ -16,7 +16,7 @@
         "colbycommunications/advanced-custom-fields-pro": "6.2.4",
         "wpackagist-plugin/wp-nested-pages": "3.2.7",
         "colbycommunications/colby-ticket": "^1.0.0",
-        "wpackagist-plugin/wp-search-with-algolia": "^2.1.0",
+        "wpackagist-plugin/wp-search-with-algolia": "2.8.2",
         "vlucas/phpdotenv": "^5.4",
         "wpackagist-plugin/timber-library": "1.23.0",
         "wpackagist-plugin/regenerate-thumbnails": "3.1.6",
@@ -24,7 +24,8 @@
         "wpackagist-plugin/advanced-gutenberg": "3.2.1",
         "colbycommunications/capabilities-pro": "2.12.0",
         "wpackagist-plugin/rest-api-blocks": "1.0.2",
-        "wpackagist-plugin/cf-images": "1.9.1"
+        "wpackagist-plugin/cf-images": "1.9.1",
+        "wpackagist-plugin/wp-all-import": "3.7.9"
     },
     "authors": [
         {
