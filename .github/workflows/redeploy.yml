@@ -1,4 +1,4 @@
-name: Percy
+name: Refresh
 on:
   workflow_dispatch:
   workflow_call:
