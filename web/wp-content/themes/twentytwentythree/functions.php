@@ -328,6 +328,19 @@ function my_acf_init() {
         'keywords'        => array( 'media', 'video' ),
       )
     );
+
+    // register embed
+    acf_register_block(
+      array(
+        'name'				    => 'embed',
+        'title'				    => __('Embed'),
+        'description'	    => __('Custom embed codes'),
+        'render_callback'	=> 'my_acf_block_render_callback',
+        'category'			  => 'layout',
+        'icon'				    => 'block-default',
+        'keywords'			  => array( 'embed', 'embeds', 'embed code' ),
+      )
+    );
   }
 }
 
