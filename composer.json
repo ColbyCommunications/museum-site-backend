@@ -25,7 +25,8 @@
         "colbycommunications/capabilities-pro": "2.12.0",
         "wpackagist-plugin/rest-api-blocks": "1.0.2",
         "wpackagist-plugin/cf-images": "1.9.1",
-        "colbycommunications/wp-all-import-pro": "4.10.0"
+        "colbycommunications/wp-all-import-pro": "4.10.0",
+        "wpackagist-plugin/term-management-tools": "2.0.1"
     },
     "authors": [
         {

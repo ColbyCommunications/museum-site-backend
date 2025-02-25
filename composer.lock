@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39a5f3d4487fbc3269feef562ee4f8ba",
+    "content-hash": "8279bfcc48eec1c59279bcce491c20b4",
     "packages": [
         {
             "name": "colbycommunications/advanced-custom-fields-pro",
@@ -6152,6 +6152,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/rest-api-blocks/"
+        },
+        {
+            "name": "wpackagist-plugin/term-management-tools",
+            "version": "2.0.1",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/term-management-tools/",
+                "reference": "tags/2.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/term-management-tools.2.0.1.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/term-management-tools/"
         },
         {
             "name": "wpackagist-plugin/timber-library",
