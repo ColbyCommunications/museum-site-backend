@@ -18,7 +18,7 @@
         "colbycommunications/colby-ticket": "^1.0.0",
         "wpackagist-plugin/wp-search-with-algolia": "2.8.2",
         "vlucas/phpdotenv": "^5.4",
-        "wpackagist-plugin/timber-library": "1.23.0",
+        "wpackagist-plugin/timber-library": "1.23.1",
         "wpackagist-plugin/regenerate-thumbnails": "3.1.6",
         "wpackagist-plugin/disable-comments": "2.4.7",
         "wpackagist-plugin/advanced-gutenberg": "3.2.4",
@@ -26,7 +26,8 @@
         "wpackagist-plugin/rest-api-blocks": "1.0.2",
         "wpackagist-plugin/cf-images": "1.9.4",
         "colbycommunications/wp-all-import-pro": "4.10.0",
-        "wpackagist-plugin/term-management-tools": "2.0.1"
+        "wpackagist-plugin/term-management-tools": "2.0.1",
+        "wpackagist-plugin/filebird": "6.4.6"
     },
     "authors": [
         {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e7a5be56337a952734b136c9f65275e",
+    "content-hash": "76853d86281211e29c417d2fdadbe527",
     "packages": [
         {
             "name": "colbycommunications/advanced-custom-fields-pro",
@@ -6083,6 +6083,24 @@
             "homepage": "https://wordpress.org/plugins/duplicate-post/"
         },
         {
+            "name": "wpackagist-plugin/filebird",
+            "version": "6.4.6",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/filebird/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/filebird.zip?timestamp=1739416968"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/filebird/"
+        },
+        {
             "name": "wpackagist-plugin/header-footer",
             "version": "3.3.2",
             "source": {
@@ -6174,15 +6192,15 @@
         },
         {
             "name": "wpackagist-plugin/timber-library",
-            "version": "1.23.0",
+            "version": "1.23.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/timber-library/",
-                "reference": "tags/1.23.0"
+                "reference": "tags/1.23.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/timber-library.1.23.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/timber-library.1.23.1.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
