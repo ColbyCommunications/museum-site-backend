@@ -9,6 +9,12 @@ add_action( 'init', 'register_post_types' );
 add_action( 'init', 'register_taxonomies' );
 add_action( 'init', 'register_menus' );
 
+function my_function() {
+  update_option( 'siteurl', 'https://colby-museum-frontend.pages.dev' );
+  update_option( 'home', 'https://colby-museum-frontend.pages.dev' );
+}
+add_action('init', 'my_function'); 
+
 /**
  * Add excerpt to search API endpoint.
  */
