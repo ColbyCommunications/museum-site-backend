@@ -499,9 +499,3 @@ function my_custom_rest_cors() {
   } );
 }
 add_action( 'rest_api_init', 'my_custom_rest_cors', 15 );
-
-
-add_filter("rest_prepare_page", function ($response) {
-  $response->data['excerpt'] = ["rendered" => get_the_excerpt(), "protected" => false];
-  return $response;
-});
