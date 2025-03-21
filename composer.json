@@ -28,7 +28,8 @@
         "colbycommunications/wp-all-import-pro": "4.10.0",
         "wpackagist-plugin/term-management-tools": "2.0.1",
         "wpackagist-plugin/filebird": "6.4.6",
-        "wpackagist-plugin/acf-to-rest-api": "3.3.4"
+        "wpackagist-plugin/acf-to-rest-api": "3.3.4",
+        "wpackagist-plugin/post-type-switcher": "3.3.1"
     },
     "authors": [
         {
