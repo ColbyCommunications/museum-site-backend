@@ -20,7 +20,7 @@
         '^/wp-admin/(.*)':
           to: "/wp/wp-admin/$1"
           regexp: true
-        '^(?!/wp/wp-admin/)/(.+)$':
+        '^(?!/wp/)/(.+)$':
           to: "https://colby-museum-frontend.pages.dev/$1"
           regexp: true
 
