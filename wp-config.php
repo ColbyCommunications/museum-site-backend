@@ -117,9 +117,9 @@ if (false !== $strRelationships = getenv('PLATFORM_RELATIONSHIPS')) {
 
     // Debug mode should be disabled on Platform.sh. Set this constant to true
     // in a wp-config-local.php file to skip this setting on local development.
-    if (!defined('WP_DEBUG')) {
+    // if (!defined('WP_DEBUG')) {
         define('WP_DEBUG', false);
-    }
+    // }
 
     // Set all of the necessary keys to unique values, based on the Platform.sh
     // entropy value.
