@@ -98,6 +98,58 @@ add_action( 'rest_api_init', function() {
   ) );
 });
 
+// get exhibitions and events
+register_rest_route( 'wp/v2', 'eoe', array(
+  'methods' => 'GET',
+  'callback' => 'get_eoe_by_date',
+) );
+
+function get_eoe_by_date( WP_REST_Request $request ) {
+
+  $type = $request->get_param('type');
+  $key = $request->get_param('key');
+  $order = $request->get_param('order');
+  $chronology = $request->get_param('chronology');
+  $page = $request->get_param('page');
+
+  if ($chronology == 'past') {
+    $tax_q = array(
+      'taxonomy' => 'chronologies',
+      'field' => 'slug',
+      'terms' => 'past',
+    );
+  } elseif ($chronology == 'current' || $chronology == 'future') {
+    $tax_q = array(
+      'taxonomy' => 'chronologies',
+      'field' => 'slug',
+      'terms' => $chronology,
+    );
+  } else {
+    $tax_q = array(
+      'taxonomy' => 'chronologies',
+      'field' => 'slug',
+      'terms' => 'past',
+      'operator' => 'NOT IN'
+    );
+  }
+
+  $ee = get_posts(array(
+    'post_type' => $type,
+    'posts_per_page' => 20,
+    'offset' => (20 * $page) - 20,
+    'page' => $page,
+    'meta_key' => $key,
+    'meta_type' => 'DATE',
+    'orderby' => 'meta_value',
+    'order' => $order,
+    'tax_query' => array(
+      $tax_q
+    )
+  ));
+
+  return $ee;
+}
+
 function register_post_types() {
   register_post_type(
     'events',
