@@ -96,13 +96,13 @@ add_action( 'rest_api_init', function() {
       ),
     ),
   ) );
-});
 
-// get exhibitions and events
-register_rest_route( 'wp/v2', 'eoe', array(
-  'methods' => 'GET',
-  'callback' => 'get_eoe_by_date',
-) );
+  // get exhibitions and events
+  register_rest_route( 'wp/v2', 'eoe', array(
+    'methods' => 'GET',
+    'callback' => 'get_eoe_by_date',
+  ) );
+});
 
 function get_eoe_by_date( WP_REST_Request $request ) {
 
