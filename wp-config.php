@@ -148,8 +148,9 @@ if (false !== $strRelationships = getenv('PLATFORM_RELATIONSHIPS')) {
 }
 
 // Define wp-content directory outside of WordPress core directory
-define('WP_HOME', $site_scheme . '://' . $site_host);
-define('WP_SITEURL', WP_HOME . '/wp');
+define('WP_HOME', 'https://colby-museum-frontend.pages.dev');
+define('WP_SITEURL', $site_scheme . '://' . $site_host . '/wp');
+
 
 define('WP_CONTENT_DIR', dirname(__FILE__) . '/web/wp-content');
 
