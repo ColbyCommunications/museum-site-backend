@@ -21,7 +21,7 @@
           to: "/wp/wp-admin/$1"
           regexp: true
         '^(?!/wp/)(?!/wp-content/)(?!/wp-json/)(?!/wp-sitemap-.*.xml)(?!/wp-sitemap.xsl)/(.+)$':
-          to: "https://colby-museum-frontend.pages.dev/$1"
+          to: "https://museum-cf.colby.edu/$1"
           regexp: true
 
 # *ALL* www.* requests should be redirected back to primary domain
