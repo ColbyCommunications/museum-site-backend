@@ -20,7 +20,7 @@
         '^/wp-admin/(.*)':
           to: "/wp/wp-admin/$1"
           regexp: true
-        '^(?!/wp/)(?!/wp-content/)(?!/wp-json/)(?!/wp-sitemap-.*.xml)(?!/wp-sitemap.xsl)/(.+)$':
+        '^(?!/wp/)(?!/wp-content/)(?!/wp-json/)(?!/wp-sitemap-.*.xml)(?!/wp-sitemap.xsl)(?!/wp-login.php)/(.+)$':
           to: "https://museum-cf.colby.edu/$1"
           regexp: true
 
