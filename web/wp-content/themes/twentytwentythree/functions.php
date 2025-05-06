@@ -81,6 +81,11 @@ add_action( 'rest_api_init', function() {
           return is_numeric( $param );
         }
       ),
+      'include' => array(
+        'validate_callback' => function($param, $request, $key) {
+          return is_numeric( $param );
+        }
+      ),
     ),
   ) );
 
