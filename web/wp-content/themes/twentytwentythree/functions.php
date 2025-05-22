@@ -32,9 +32,9 @@ function register_menus() {
 }
 
 function get_site_menus() {
-  $site = top_nav_menu(10);
-  $socials = top_nav_menu(11);
-  $utility = top_nav_menu(12);
+  $site = top_nav_menu(array( 'id' => 10 ));
+  $socials = top_nav_menu(array( 'id' => 11 ));
+  $utility = top_nav_menu(array( 'id' => 12 ));
 
   $result = array(
     'site' => $site,
