@@ -36,7 +36,7 @@ function top_nav_menu($data) {
   $menu_ids = $data['id'];
 
   if ($data->include) {
-    $menu_ids = array_merge($menu_ids, $data['include']);
+    $menu_ids = array_push($menu_ids, $data['include']);
   }
 
   $menu = wp_get_nav_menu_items( $menu_ids );
