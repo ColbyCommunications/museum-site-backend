@@ -31,13 +31,23 @@ function register_menus() {
   );
 }
 
+function get_site_menus() {
+  $site = top_nav_menu(10);
+  $socials = top_nav_menu(11);
+  $utility = top_nav_menu(12);
+
+  $result = array(
+    'site' => $site,
+    'social' => $socials,
+    'utility' => $utility,
+  );
+
+  return $result; 
+}
+
 // Return formatted top-nav menu
 function top_nav_menu($data) {
   $menu_ids = $data['id'];
-
-  if ($data->include) {
-    $menu_ids = array_push($menu_ids, $data['include']);
-  }
 
   $menu = wp_get_nav_menu_items( $menu_ids );
   $child_items = [];
@@ -79,16 +89,16 @@ function top_nav_menu($data) {
 // add endpoint
 add_action( 'rest_api_init', function() {
 
+  register_rest_route( 'wp/v2', 'menus', array(
+    'methods' => 'GET',
+    'callback' => 'get_site_menus',
+  ));
+
   register_rest_route( 'wp/v2', 'menus/(?P<id>\d+)', array(
     'methods' => 'GET',
     'callback' => 'top_nav_menu',
     'args' => array(
       'id' => array(
-        'validate_callback' => function($param, $request, $key) {
-          return is_numeric( $param );
-        }
-      ),
-      'include' => array(
         'validate_callback' => function($param, $request, $key) {
           return is_numeric( $param );
         }
