@@ -33,7 +33,12 @@ function register_menus() {
 
 // Return formatted top-nav menu
 function top_nav_menu($data) {
-  $menu = wp_get_nav_menu_items( $data['id'] );
+  $menu_ids = $data['id']
+  if ($data->include) {
+    $menu_ids = array_merge($menu_ids, $data['include']);
+  }
+
+  $menu = wp_get_nav_menu_items( $menu_ids );
   $child_items = [];
   $result = [];
 
@@ -61,6 +66,7 @@ function top_nav_menu($data) {
 
   foreach($menu as $item) {
       $my_item = [
+          'id' => $item->ID,
           'title' => $item->title,
           'url' => $item->url,
           'children' => $item->child_items
