@@ -33,7 +33,8 @@ function register_menus() {
 
 // Return formatted top-nav menu
 function top_nav_menu($data) {
-  $menu_ids = $data['id']
+  $menu_ids = $data['id'];
+
   if ($data->include) {
     $menu_ids = array_merge($menu_ids, $data['include']);
   }
