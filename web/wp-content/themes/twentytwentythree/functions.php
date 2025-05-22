@@ -31,9 +31,25 @@ function register_menus() {
   );
 }
 
+function get_site_menus() {
+  $site = top_nav_menu(array( 'id' => 10 ));
+  $socials = top_nav_menu(array( 'id' => 11 ));
+  $utility = top_nav_menu(array( 'id' => 12 ));
+
+  $result = array(
+    'site' => $site,
+    'social' => $socials,
+    'utility' => $utility,
+  );
+
+  return $result; 
+}
+
 // Return formatted top-nav menu
 function top_nav_menu($data) {
-  $menu = wp_get_nav_menu_items( $data['id'] );
+  $menu_ids = $data['id'];
+
+  $menu = wp_get_nav_menu_items( $menu_ids );
   $child_items = [];
   $result = [];
 
@@ -61,6 +77,7 @@ function top_nav_menu($data) {
 
   foreach($menu as $item) {
       $my_item = [
+          'id' => $item->ID,
           'title' => $item->title,
           'url' => $item->url,
           'children' => $item->child_items
@@ -71,6 +88,11 @@ function top_nav_menu($data) {
 }
 // add endpoint
 add_action( 'rest_api_init', function() {
+
+  register_rest_route( 'wp/v2', 'menus', array(
+    'methods' => 'GET',
+    'callback' => 'get_site_menus',
+  ));
 
   register_rest_route( 'wp/v2', 'menus/(?P<id>\d+)', array(
     'methods' => 'GET',
