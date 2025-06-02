@@ -62,7 +62,7 @@ function embed_block_media($page) {
     }
   }
 
-  $media_req = new WP_REST_Request("GET", '/wp/v2/media', array( 'include' => $medias ));
+  $media_req = new WP_REST_Request("GET", '/wp/v2/media', array( 'include' => $medias, 'per_page' => 20 ));
   $medias = rest_do_request( $media_req );
 
   // @TODO: Check response status / err
