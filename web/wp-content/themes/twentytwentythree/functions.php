@@ -46,8 +46,24 @@ function get_site_menus() {
 }
 
 function embed_block_media($page) {
-  print_r($page);
-  return get_attached_media('image', $page['id']);
+  $medias = [];
+
+  // - 1 - For each block in $page->block_data...
+  foreach ($page->block_data as $block) {
+    // - 1.1 - Walk each data entry for the block
+    foreach ($block->attrs->data as $key => $value) {
+      // @TODO: 
+      // - 1.1.1 - Check if the key is like _item_NNN_image, return if not
+      if (!preg_match("_item_\d+?_image",$key)) {
+        continue;
+      }
+
+      // - 1.1.2 - Store get_media_item(NNN) in result
+      $media = get_media_item($key);
+      array_push($medias, $media);
+    }
+  }
+  return $medias;
 }
 
 // Return formatted top-nav menu
