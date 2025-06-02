@@ -45,20 +45,6 @@ function get_site_menus() {
   return $result; 
 }
 
-function get_site_menus() {
-  $site = top_nav_menu(array( 'id' => 10 ));
-  $socials = top_nav_menu(array( 'id' => 11 ));
-  $utility = top_nav_menu(array( 'id' => 12 ));
-
-  $result = array(
-    'site' => $site,
-    'social' => $socials,
-    'utility' => $utility,
-  );
-
-  return $result; 
-}
-
 function embed_wp_attachments($page) {
   return get_attached_media('image', $page['id']);
 }
