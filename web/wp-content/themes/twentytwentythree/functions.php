@@ -54,7 +54,7 @@ function embed_block_media($page) {
     foreach ($block->attrs->data as $key => $value) {
       // @TODO: 
       // - 1.1.1 - Check if the key is like _item_NNN_image, return if not
-      if (!preg_match("items_\d+?_image",$key)) {
+      if (!preg_match("/items_\d+?_image/",$key)) {
         continue;
       }
 
