@@ -46,7 +46,7 @@ function get_site_menus() {
 }
 
 function embed_block_media($page) {
-  $medias = [];
+  $media_ids = [];
 
   // - 1 - For each block in $page->block_data...
   foreach ($page->block_data as $block) {
@@ -57,12 +57,16 @@ function embed_block_media($page) {
         continue;
       }
 
-      // - 1.1.2 - Store get_media_item(NNN) in result
-      $media = get_media_item($value);
-      array_push($medias, $media);
+      // - 1.1.2 - Store the id
+      array_push($media_ids, $value);
     }
   }
-  return $medias;
+
+  $media_req = new WP_REST_Request("GET", '/wp/v2/media', array( 'include' => $medias ));
+  $medias = rest_do_request( $media_req );
+
+  // @TODO: Check response status / err
+  return $medias->get_data();
 }
 
 // Return formatted top-nav menu
