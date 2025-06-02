@@ -45,6 +45,24 @@ function get_site_menus() {
   return $result; 
 }
 
+function get_site_menus() {
+  $site = top_nav_menu(array( 'id' => 10 ));
+  $socials = top_nav_menu(array( 'id' => 11 ));
+  $utility = top_nav_menu(array( 'id' => 12 ));
+
+  $result = array(
+    'site' => $site,
+    'social' => $socials,
+    'utility' => $utility,
+  );
+
+  return $result; 
+}
+
+function embed_wp_attachments($page) {
+  return get_attached_media('image', $page['id']);
+}
+
 // Return formatted top-nav menu
 function top_nav_menu($data) {
   $menu_ids = $data['id'];
@@ -86,9 +104,22 @@ function top_nav_menu($data) {
   }
   return $result;
 }
-// add endpoint
+
+
+// Add REST endpoints
 add_action( 'rest_api_init', function() {
 
+  // Customize `page` endpoint for embedded wp:attachments
+  register_rest_field('page', 
+                      'media_attachments', 
+                      array(
+                        'get_callback' => 'embed_wp_attachments', 
+                        'update_callback' => null, 
+                        'schema' => null 
+                      )
+                    );
+
+  // Menus
   register_rest_route( 'wp/v2', 'menus', array(
     'methods' => 'GET',
     'callback' => 'get_site_menus',
@@ -111,7 +142,7 @@ add_action( 'rest_api_init', function() {
     ),
   ) );
 
-  // breadcrumbs
+  // Breadcrumbs
   register_rest_route( 'wp/v2', 'breadcrumbs/(?P<id>\d+)', array(
     'methods' => 'GET',
     'callback' => 'get_breadcrumbs',
@@ -124,11 +155,13 @@ add_action( 'rest_api_init', function() {
     ),
   ) );
 
-  // get exhibitions and events
+  // Exhibitions and events
   register_rest_route( 'wp/v2', 'eoe', array(
     'methods' => 'GET',
     'callback' => 'get_eoe_by_date',
-  ) );
+  ));
+
+
 });
 
 function get_eoe_by_date( WP_REST_Request $request ) {
