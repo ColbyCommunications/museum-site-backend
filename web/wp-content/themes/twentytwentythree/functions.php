@@ -45,7 +45,8 @@ function get_site_menus() {
   return $result; 
 }
 
-function embed_wp_attachments($page) {
+function embed_block_media($page) {
+  print_r($page);
   return get_attached_media('image', $page['id']);
 }
 
@@ -97,9 +98,9 @@ add_action( 'rest_api_init', function() {
 
   // Customize `page` endpoint for embedded wp:attachments
   register_rest_field('page', 
-                      'media_attachments', 
+                      'block_medias', 
                       array(
-                        'get_callback' => 'embed_wp_attachments', 
+                        'get_callback' => 'embed_block_media', 
                         'update_callback' => null, 
                         'schema' => null 
                       )
