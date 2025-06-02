@@ -52,14 +52,13 @@ function embed_block_media($page) {
   foreach ($page->block_data as $block) {
     // - 1.1 - Walk each data entry for the block
     foreach ($block->attrs->data as $key => $value) {
-      // @TODO: 
-      // - 1.1.1 - Check if the key is like _item_NNN_image, return if not
+      // - 1.1.1 - Skip if the key is like items_NNN_image
       if (!preg_match("/items_\d+?_image/",$key)) {
         continue;
       }
 
       // - 1.1.2 - Store get_media_item(NNN) in result
-      $media = get_media_item($key);
+      $media = get_media_item($value);
       array_push($medias, $media);
     }
   }
