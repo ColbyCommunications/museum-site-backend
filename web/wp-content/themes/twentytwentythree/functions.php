@@ -177,6 +177,7 @@ function get_eoe_by_date( WP_REST_Request $request ) {
   $order = $request->get_param('order');
   $chronology = $request->get_param('chronology');
   $page = $request->get_param('page');
+  $per_page = $request->get_param('per_page');
 
   if ($chronology == 'past') {
     $tax_q = array(
@@ -201,8 +202,8 @@ function get_eoe_by_date( WP_REST_Request $request ) {
 
   $ee = get_posts(array(
     'post_type' => $type,
-    'posts_per_page' => 20,
-    'offset' => (20 * $page) - 20,
+    'posts_per_page' => $per_page,
+    'offset' => ($per_page * $page) - $per_page,
     'page' => $page,
     'meta_key' => $key,
     'meta_type' => 'DATE',
