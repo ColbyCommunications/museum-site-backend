@@ -166,9 +166,44 @@ add_action( 'rest_api_init', function() {
     'methods' => 'GET',
     'callback' => 'get_eoe_by_date',
   ));
+  register_rest_route( 'wp/v2', 'eoe/(?P<id>\d+)', array(
+    'methods' => 'GET',
+    'callback' => 'get_eoe_post_by_date',
+  ));
 
 
 });
+
+function get_eoe_post_by_date( WP_REST_Request $request ) {
+
+  $id = $request['id'];
+  $type = $request->get_param('type');
+
+  $ee = get_posts(array(
+    'post_type' => $type,
+    'posts_per_page' => 1,
+    'include' => array($id)
+  ));
+
+  for($i = 0; $i < count($ee); $i++) {
+    $ee[$i]->acf = get_fields($ee[$i]->ID);
+    $ee[$i]->link = get_permalink($ee[$i]->ID);
+
+    $featured_image_id = get_post_thumbnail_id($ee[$i]->ID);
+    if ($featured_image_id) {
+        $ee[$i]->featured_media = array(
+            $featured_image_id,
+        );
+    } else {
+        $ee[$i]->featured_media = null;
+    }
+  }
+
+ 
+
+
+  return $ee;
+}
 
 function get_eoe_by_date( WP_REST_Request $request ) {
 
@@ -216,6 +251,16 @@ function get_eoe_by_date( WP_REST_Request $request ) {
 
   for($i = 0; $i < count($ee); $i++) {
     $ee[$i]->acf = get_fields($ee[$i]->ID);
+    $ee[$i]->link = get_permalink($ee[$i]->ID);
+
+    $featured_image_id = get_post_thumbnail_id($ee[$i]->ID);
+    if ($featured_image_id) {
+        $ee[$i]->featured_media = array(
+            $featured_image_id,
+        );
+    } else {
+        $ee[$i]->featured_media = null;
+    }
   }
 
   return $ee;
