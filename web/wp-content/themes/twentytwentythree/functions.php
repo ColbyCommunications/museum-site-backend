@@ -214,6 +214,10 @@ function get_eoe_by_date( WP_REST_Request $request ) {
     )
   ));
 
+  for($i = 0; $i < count($ee); $i++) {
+    $ee[$i]->acf = get_fields($ee[$i]->ID);
+  }
+
   return $ee;
 }
 
