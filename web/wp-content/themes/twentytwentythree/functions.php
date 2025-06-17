@@ -124,12 +124,43 @@ add_action( 'rest_api_init', function() {
     ),
   ) );
 
-  // get exhibitions and events
+  // Exhibitions and events
   register_rest_route( 'wp/v2', 'eoe', array(
     'methods' => 'GET',
     'callback' => 'get_eoe_by_date',
-  ) );
+  ));
+  register_rest_route( 'wp/v2', 'eoe/(?P<id>\d+)', array(
+    'methods' => 'GET',
+    'callback' => 'get_eoe_post_by_date',
+  ));
 });
+
+function get_eoe_post_by_date( WP_REST_Request $request ) {
+
+  $id = $request['id'];
+  $type = $request->get_param('type');
+
+  $ee = get_posts(array(
+    'post_type' => $type,
+    'posts_per_page' => 1,
+    'include' => array($id)
+  ));
+
+  for($i = 0; $i < count($ee); $i++) {
+    $ee[$i]->acf = get_fields($ee[$i]->ID);
+    $ee[$i]->link = get_permalink($ee[$i]->ID);
+
+    $featured_image_id = get_post_thumbnail_id($ee[$i]->ID);
+    if ($featured_image_id) {
+        $ee[$i]->featured_media = array(
+            $featured_image_id,
+        );
+    } else {
+        $ee[$i]->featured_media = null;
+    }
+  }
+  return $ee;
+}
 
 function get_eoe_by_date( WP_REST_Request $request ) {
 
@@ -138,6 +169,7 @@ function get_eoe_by_date( WP_REST_Request $request ) {
   $order = $request->get_param('order');
   $chronology = $request->get_param('chronology');
   $page = $request->get_param('page');
+  $per_page = $request->get_param('per_page');
 
   if ($chronology == 'past') {
     $tax_q = array(
@@ -162,8 +194,8 @@ function get_eoe_by_date( WP_REST_Request $request ) {
 
   $ee = get_posts(array(
     'post_type' => $type,
-    'posts_per_page' => 20,
-    'offset' => (20 * $page) - 20,
+    'posts_per_page' => $per_page,
+    'offset' => ($per_page * $page) - $per_page,
     'page' => $page,
     'meta_key' => $key,
     'meta_type' => 'DATE',
@@ -173,6 +205,20 @@ function get_eoe_by_date( WP_REST_Request $request ) {
       $tax_q
     )
   ));
+
+  for($i = 0; $i < count($ee); $i++) {
+    $ee[$i]->acf = get_fields($ee[$i]->ID);
+    $ee[$i]->link = get_permalink($ee[$i]->ID);
+
+    $featured_image_id = get_post_thumbnail_id($ee[$i]->ID);
+    if ($featured_image_id) {
+        $ee[$i]->featured_media = array(
+            $featured_image_id,
+        );
+    } else {
+        $ee[$i]->featured_media = null;
+    }
+  }
 
   return $ee;
 }
