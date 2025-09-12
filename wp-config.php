@@ -63,6 +63,10 @@ if (false !== $strRelationships = getenv('PLATFORM_RELATIONSHIPS')) {
     define('DB_CHARSET', 'utf8');
     define('DB_COLLATE', '');
 
+    if (file_exists(dirname(__FILE__) . '/project/site_specific/config/wp-config-site.php')) {
+        include dirname(__FILE__) . '/project/site_specific/config/wp-config-site.php';
+    }
+
     //we need routes for both multi and standard
     $aryRoutes = array();//assume we dont have it
     if (false !== $strRoutes = getenv('PLATFORM_ROUTES')) {
@@ -119,9 +123,6 @@ if (false !== $strRelationships = getenv('PLATFORM_RELATIONSHIPS')) {
     // in a wp-config-local.php file to skip this setting on local development.
     if (!defined('WP_DEBUG')) {
         define('WP_DEBUG', false);
-        ini_set( 'display_errors', 'Off' );
-		ini_set( 'error_reporting', E_ALL );
-		define( 'WP_DEBUG_DISPLAY', false );
     }
 
     // Set all of the necessary keys to unique values, based on the Platform.sh
@@ -151,7 +152,6 @@ if (false !== $strRelationships = getenv('PLATFORM_RELATIONSHIPS')) {
 define('WP_HOME', $site_scheme . '://' . $site_host);
 define('WP_SITEURL', WP_HOME . '/wp');
 
-
 define('WP_CONTENT_DIR', dirname(__FILE__) . '/web/wp-content');
 
 $strContentURL =  WP_HOME . '/wp-content';
@@ -178,15 +178,6 @@ define('WP_CONTENT_URL', $strContentURL);
 // prefix.
 $table_prefix  = 'wp_';
 
-/**
- * some plugins require constants be added to the wp-config.php file. Since this file is not changeable on a site-by-site
- * basis, will include a secondary file that is site-editable, allowing for additional constants or overriding of any
- * variables that have already been set (e.g. $table_prefix)
- */
-
-if (file_exists(dirname(__FILE__) . '/wp-config-extras.php')) {
-    include dirname(__FILE__) . '/wp-config-extras.php';
-}
 
 // Default PHP settings.
 ini_set('session.gc_probability', 1);
