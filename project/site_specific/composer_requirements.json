@@ -1,7 +1,7 @@
 {
     "require": {
-        "wpackagist-plugin/filebird": "6.4.6",
-        "wpackagist-plugin/cf-images": "1.9.4",
+        "wpackagist-plugin/filebird": "6.4.9",
+        "wpackagist-plugin/cf-images": "1.9.5",
         "wpackagist-plugin/rest-api-blocks": "1.0.2",
         "colbycommunications/wp-all-import-pro": "4.10.0",
         "wpackagist-plugin/term-management-tools": "2.0.1",
