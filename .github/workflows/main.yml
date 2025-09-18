@@ -294,10 +294,10 @@ jobs:
   #         </html>
   #         EOL
   #     - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v3
-        with:
-          target_branch: ghpages
-          build_dir: public
-        env:
-          GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
+        # if: success()
+        # uses: crazy-max/ghaction-github-pages@v3
+        # with:
+        #   target_branch: ghpages
+        #   build_dir: public
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
