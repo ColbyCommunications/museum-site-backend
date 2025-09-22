@@ -45,30 +45,6 @@ function get_site_menus() {
   return $result; 
 }
 
-function embed_block_media($page) {
-  $media_ids = [];
-
-  // - 1 - For each block in $page->block_data...
-  foreach ($page->block_data as $block) {
-    // - 1.1 - Walk each data entry for the block
-    foreach ($block->attrs->data as $key => $value) {
-      // - 1.1.1 - Skip if the key is like items_NNN_image
-      if (!preg_match("/items_\d+?_image/",$key)) {
-        continue;
-      }
-
-      // - 1.1.2 - Store the id
-      array_push($media_ids, $value);
-    }
-  }
-
-  $media_req = new WP_REST_Request("GET", '/wp/v2/media', array( 'include' => $medias, 'per_page' => 20 ));
-  $medias = rest_do_request( $media_req );
-
-  // @TODO: Check response status / err
-  return $medias->get_data();
-}
-
 // Return formatted top-nav menu
 function top_nav_menu($data) {
   $menu_ids = $data['id'];
@@ -110,22 +86,9 @@ function top_nav_menu($data) {
   }
   return $result;
 }
-
-
-// Add REST endpoints
+// add endpoint
 add_action( 'rest_api_init', function() {
 
-  // Customize `page` endpoint for embedded wp:attachments
-  register_rest_field('page', 
-                      'block_medias', 
-                      array(
-                        'get_callback' => 'embed_block_media', 
-                        'update_callback' => null, 
-                        'schema' => null 
-                      )
-                    );
-
-  // Menus
   register_rest_route( 'wp/v2', 'menus', array(
     'methods' => 'GET',
     'callback' => 'get_site_menus',
@@ -148,7 +111,7 @@ add_action( 'rest_api_init', function() {
     ),
   ) );
 
-  // Breadcrumbs
+  // breadcrumbs
   register_rest_route( 'wp/v2', 'breadcrumbs/(?P<id>\d+)', array(
     'methods' => 'GET',
     'callback' => 'get_breadcrumbs',
@@ -170,8 +133,6 @@ add_action( 'rest_api_init', function() {
     'methods' => 'GET',
     'callback' => 'get_eoe_post_by_date',
   ));
-
-
 });
 
 function get_eoe_post_by_date( WP_REST_Request $request ) {
@@ -198,10 +159,6 @@ function get_eoe_post_by_date( WP_REST_Request $request ) {
         $ee[$i]->featured_media = null;
     }
   }
-
- 
-
-
   return $ee;
 }
 
