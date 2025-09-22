@@ -111,7 +111,7 @@ add_action( 'rest_api_init', function() {
     ),
   ) );
 
-  // Breadcrumbs
+  // breadcrumbs
   register_rest_route( 'wp/v2', 'breadcrumbs/(?P<id>\d+)', array(
     'methods' => 'GET',
     'callback' => 'get_breadcrumbs',
