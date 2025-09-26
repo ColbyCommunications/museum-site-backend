@@ -1,0 +1,18 @@
+{
+    "require": {
+        "wpackagist-plugin/filebird": "6.4.9",
+        "wpackagist-plugin/cf-images": "1.9.5",
+        "wpackagist-plugin/rest-api-blocks": "1.0.2",
+        "colbycommunications/wp-all-import-pro": "4.10.0",
+        "wpackagist-plugin/term-management-tools": "2.0.1",
+        "wpackagist-plugin/acf-to-rest-api": "3.3.4",
+        "wpackagist-plugin/post-type-switcher": "4.0.0",
+        "wpackagist-plugin/cache-control": "2.2.5"
+    },
+    "repositories": [],
+    "extra": {
+        "installer-paths": {
+            "web/wp-content/mu-plugins/{$name}": []
+        }
+    }
+}
