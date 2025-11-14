@@ -360,7 +360,6 @@ function my_acf_init() {
         'category'			  => 'layout',
         'icon'				    => 'block-default',
         'keywords'			  => array( 'heading', 'subheading', 'context', 'arrow', 'button', 'layout' ),
-        'template_lock'    => "InnerBlocks",
       )
     );
 
