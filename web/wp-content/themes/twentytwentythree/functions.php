@@ -627,7 +627,7 @@ add_action( 'rest_api_init', 'my_custom_rest_cors', 15 );
 
 function my_admin_confirm_delete_script() {
   // Get the path to your script
-  $script_url = get_stylesheet_directory_uri() . '/js/admin-confirm.js'; 
+  $script_url = get_stylesheet_directory_uri() . '/js/admin-tools.js'; 
 
   // Load the script
   wp_enqueue_script(
