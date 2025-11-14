@@ -624,3 +624,19 @@ function my_custom_rest_cors() {
   } );
 }
 add_action( 'rest_api_init', 'my_custom_rest_cors', 15 );
+
+function my_admin_confirm_delete_script() {
+  // Get the path to your script
+  $script_url = get_stylesheet_directory_uri() . '/js/admin-confirm.js'; 
+
+  // Load the script
+  wp_enqueue_script(
+      'admin-confirm-delete', 
+      $script_url, 
+      array('jquery'), // Make sure jQuery is loaded first
+      '1.0', 
+      true // Load in the footer
+  );
+}
+// Hook into the admin to load the script
+add_action('admin_enqueue_scripts', 'my_admin_confirm_delete_script');
