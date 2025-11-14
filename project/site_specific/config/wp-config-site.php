@@ -4,3 +4,5 @@ if ( 'master' == getenv( 'PLATFORM_BRANCH' ) ) {
 } else {
     define( 'ALGOLIA_INDEX_NAME_PREFIX', 'platform_wp_museum_redesign_' );
 }
+
+define( 'MEDIA_TRASH', true );
