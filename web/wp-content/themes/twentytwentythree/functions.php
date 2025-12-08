@@ -644,6 +644,23 @@ function my_admin_confirm_delete_script() {
 // Hook into the admin to load the script
 add_action('admin_enqueue_scripts', 'my_admin_confirm_delete_script');
 
+
+/**
+ * 1. Register new 'orderby' options for the Exhibition connection.
+ */
+add_filter( 'graphql_exhibition_connection_orderby_values', function( $values, $subject ) {
+    
+  // Add "START_DATE" as an option
+  $values['START_DATE'] = 'Order exhibitions by the ACF Start Date';
+
+  // Add "END_DATE" as an option
+  $values['END_DATE']   = 'Order exhibitions by the ACF End Date';
+
+  return $values;
+
+}, 10, 2 );
+
+
 /**
  * 1. Register 'startDate' and 'endDate' fields to the Exhibition "Where" Input.
  * * NOTE: Check your GraphQL Schema to ensure your CPT Single Name is 'Exhibition'.
@@ -715,6 +732,27 @@ add_filter('graphql_post_object_connection_query_args', function ($query_args, $
           'type'    => 'DATE'
       ];
   }
+
+  // Check if the user requested to order by our custom fields
+  if ( isset( $args['where']['orderby'] ) && is_array( $args['where']['orderby'] ) ) {
+        
+    foreach ( $args['where']['orderby'] as $order ) {
+        
+        // If ordering by Start Date
+        if ( isset( $order['field'] ) && 'START_DATE' === $order['field'] ) {
+            $query_args['meta_key'] = 'date'; // The actual ACF Field Name for Start Date
+            $query_args['orderby']  = 'meta_value_num'; // Treat as number for correct date sorting
+            $query_args['order']    = $order['order'];
+        }
+
+        // If ordering by End Date
+        if ( isset( $order['field'] ) && 'END_DATE' === $order['field'] ) {
+            $query_args['meta_key'] = 'endDate'; // The actual ACF Field Name for End Date
+            $query_args['orderby']  = 'meta_value_num';
+            $query_args['order']    = $order['order'];
+        }
+    }
+}
 
   // If we added rules, update the main query args
   if (!empty($meta_query)) {
