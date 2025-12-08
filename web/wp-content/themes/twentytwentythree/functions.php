@@ -652,8 +652,8 @@ function register_acf_date_filter() {
 
 function filter_posts_by_acf_date( $query_args, $where_args ) {
   // Check if the custom 'eventDateQuery' argument is provided in the GraphQL query
-  if ( isset( $where_args['eventDateQuery'] ) ) {
-      $target_date = sanitize_text_field( $where_args['eventDateQuery'] );
+  if ( isset( $where_args['exhibitionDateQuery'] ) ) {
+      $target_date = sanitize_text_field( $where_args['exhibitionDateQuery'] );
       
       // Add a meta query to the WP_Query arguments
       $query_args['meta_query'][] = array(
@@ -678,7 +678,7 @@ add_action( 'graphql_register_types', 'register_acf_date_filter' );
 add_filter( 'graphql_post_object_connection_args', 'add_acf_date_query_arg' );
 
 function add_acf_date_query_arg( $args ) {
-  $args['where']['args']['eventDateQuery'] = [
+  $args['where']['args']['exhibitionDateQuery'] = [
       'type' => 'String', // The type of the input value
       'description' => 'Filter posts by ACF event date (YYYYMMDD format), comparing greater than or equal to.',
   ];
