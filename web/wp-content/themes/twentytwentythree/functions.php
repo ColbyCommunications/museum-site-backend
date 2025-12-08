@@ -644,43 +644,83 @@ function my_admin_confirm_delete_script() {
 // Hook into the admin to load the script
 add_action('admin_enqueue_scripts', 'my_admin_confirm_delete_script');
 
+/**
+ * 1. Register 'startDate' and 'endDate' fields to the Exhibition "Where" Input.
+ * * NOTE: Check your GraphQL Schema to ensure your CPT Single Name is 'Exhibition'.
+ * If your CPT is 'exhibitions', the input name might be 'RootQueryToExhibitionsConnectionWhereArgs'.
+ * You can check this in the GraphiQL IDE documentation explorer.
+ */
+add_action('graphql_register_types', function () {
+    
+  // The name of the Input Type for your CPT's "where" clause.
+  // Usually: RootQueryTo{GraphqlSingleName}ConnectionWhereArgs
+  $input_type_name = 'RootQueryToExhibitionConnectionWhereArgs';
 
-function register_acf_date_filter() {
-  // Register a custom argument for the 'Post' type connection (or your specific CPT, e.g., 'Event')
-  add_filter( 'graphql_post_object_connection_query_args', 'filter_posts_by_acf_date', 10, 2 );
-}
+  // Register "startDate" (Filters for exhibitions starting ON or AFTER this date)
+  register_graphql_field($input_type_name, 'startDateFilter', [
+      'type' => 'String',
+      'description' => 'Filter exhibitions that start on or after this date (Format: YYYY-MM-DD)',
+  ]);
 
-function filter_posts_by_acf_date( $query_args, $where_args ) {
-  // Check if the custom 'eventDateQuery' argument is provided in the GraphQL query
-  if ( isset( $where_args['exhibitionDateQuery'] ) ) {
-      $target_date = sanitize_text_field( $where_args['exhibitionDateQuery'] );
+  // Register "endDate" (Filters for exhibitions ending ON or BEFORE this date)
+  register_graphql_field($input_type_name, 'endDateFilter', [
+      'type' => 'String',
+      'description' => 'Filter exhibitions that end on or before this date (Format: YYYY-MM-DD)',
+  ]);
+});
+
+/**
+* 2. Intercept the GraphQL query and apply the Meta Query logic.
+*/
+add_filter('graphql_post_object_connection_query_args', function ($query_args, $source, $args, $context, $info) {
+
+  // Only run this for the 'exhibition' post type
+  // Ensure this matches your CPT's actual register_post_type key
+  $post_type = 'exhibition'; // or 'exhibitions', depending on your setup
+  
+  if (isset($query_args['post_type']) && $query_args['post_type'] !== $post_type) {
+      return $query_args;
+  }
+
+  // Prepare the meta_query array if it doesn't exist
+  $meta_query = isset($query_args['meta_query']) ? $query_args['meta_query'] : [];
+  
+  // Check if the user used our new 'where' args
+  $where_args = isset($args['where']) ? $args['where'] : [];
+
+  // --- HANDLE START DATE (ACF field: 'date') ---
+  if (isset($where_args['startDateFilter']) && !empty($where_args['startDateFilter'])) {
       
-      // Add a meta query to the WP_Query arguments
-      $query_args['meta_query'][] = array(
-          'key'     => 'date', // Replace 'event_date' with your ACF field name
-          'value'   => $target_date,
-          'compare' => '>=', // Use comparison operators like '>=', '<=', '=', etc.
-          'type'    => 'NUMERIC', // Use NUMERIC or CHAR type for date comparisons
-      );
+      // Convert YYYY-MM-DD to Ymd (ACF default storage format)
+      // If your ACF return format is different, you might not need the str_replace.
+      $clean_date = date('Ymd', strtotime($where_args['startDateFilter']));
 
-      // Optional: Order by the date field
-      // $query_args['meta_key'] = 'date';
-      // $query_args['orderby'] = 'meta_value_num'; // Use 'meta_value_num' for numeric ordering
-      // $query_args['order'] = 'ASC';
+      $meta_query[] = [
+          'key'     => 'date',     // The actual ACF Field Name
+          'value'   => $clean_date,
+          'compare' => '>=',       // "Greater than or equal to" (On or After)
+          'type'    => 'DATE'
+      ];
+  }
+
+  // --- HANDLE END DATE (ACF field: 'endDate') ---
+  if (isset($where_args['endDateFilter']) && !empty($where_args['endDateFilter'])) {
+      
+      $clean_date = date('Ymd', strtotime($where_args['endDateFilter']));
+
+      $meta_query[] = [
+          'key'     => 'endDate',  // The actual ACF Field Name
+          'value'   => $clean_date,
+          'compare' => '<=',       // "Less than or equal to" (On or Before)
+          'type'    => 'DATE'
+      ];
+  }
+
+  // If we added rules, update the main query args
+  if (!empty($meta_query)) {
+      $query_args['meta_query'] = $meta_query;
   }
 
   return $query_args;
-}
 
-add_action( 'graphql_register_types', 'register_acf_date_filter' );
-
-// Expose the custom argument to the GraphQL schema (optional but recommended for documentation)
-add_filter( 'graphql_post_object_connection_args', 'add_acf_date_query_arg' );
-
-function add_acf_date_query_arg( $args ) {
-  $args['where']['args']['exhibitionDateQuery'] = [
-      'type' => 'String', // The type of the input value
-      'description' => 'Filter posts by ACF event date (YYYYMMDD format), comparing greater than or equal to.',
-  ];
-  return $args;
-}
+}, 10, 5);
