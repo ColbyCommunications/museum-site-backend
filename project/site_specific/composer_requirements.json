@@ -7,7 +7,8 @@
         "wpackagist-plugin/term-management-tools": "2.0.1",
         "wpackagist-plugin/acf-to-rest-api": "3.3.4",
         "wpackagist-plugin/post-type-switcher": "4.0.0",
-        "wpackagist-plugin/cache-control": "2.2.5"
+        "wpackagist-plugin/cache-control": "2.2.5",
+        "wpackagist-plugin/wp-graphql": "2.5.3"
     },
     "repositories": [],
     "extra": {
