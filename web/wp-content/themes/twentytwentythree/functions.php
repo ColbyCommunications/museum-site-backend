@@ -265,6 +265,9 @@ function register_post_types() {
       'menu_icon'         => 'dashicons-art',
       'show_in_nav_menus' => true,
       'supports'          => array( 'title', 'editor', 'revisions', 'excerpt', 'thumbnail' ),
+      'show_in_graphql' => true, 
+      'graphql_single_name' => 'exhibition',
+      'graphql_plural_name' => 'exhibitions',
     )
   );
 
