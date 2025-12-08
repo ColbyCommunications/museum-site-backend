@@ -8,7 +8,8 @@
         "wpackagist-plugin/acf-to-rest-api": "3.3.4",
         "wpackagist-plugin/post-type-switcher": "4.0.0",
         "wpackagist-plugin/cache-control": "2.2.5",
-        "wpackagist-plugin/wp-graphql": "2.5.3"
+        "wpackagist-plugin/wp-graphql": "2.5.3",
+        "wpackagist-plugin/wpgraphql-acf": "2.4.1"
     },
     "repositories": [],
     "extra": {
