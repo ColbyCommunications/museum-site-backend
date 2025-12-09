@@ -790,7 +790,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
 
   // 3. Build the Query Arguments
   $args = [
-      'post_type'      => 'exhibition', // Ensure this matches your CPT slug
+      'post_type'      => 'exhibitions', // Ensure this matches your CPT slug
       'posts_per_page' => $posts_per_page,
       'post_status'    => 'publish',
       'meta_key'       => $meta_key_sort,
@@ -815,7 +815,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
           case 'past':
               // Ended before today
               $args['meta_query'][] = [
-                  'key'     => 'endDate',
+                  'key'     => 'end_date',
                   'value'   => $today,
                   'compare' => '<',
                   'type'    => 'NUMERIC'
@@ -832,7 +832,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
                   'type'    => 'NUMERIC'
               ];
               $args['meta_query'][] = [
-                  'key'     => 'endDate',
+                  'key'     => 'end_date',
                   'value'   => $today,
                   'compare' => '>=',
                   'type'    => 'NUMERIC'
@@ -847,6 +847,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
 
   // 6. Loop and Format Data
   if ( $query->have_posts() ) {
+    
       while ( $query->have_posts() ) {
           $query->the_post();
           
