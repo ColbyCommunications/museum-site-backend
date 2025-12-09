@@ -133,6 +133,12 @@ add_action( 'rest_api_init', function() {
     'methods' => 'GET',
     'callback' => 'get_eoe_post_by_date',
   ));
+
+  register_rest_route( 'custom/v1', '/exhibitions', [
+    'methods'             => 'GET',
+    'callback'            => 'get_filtered_exhibitions',
+    'permission_callback' => '__return_true', // Public endpoint
+]);
 });
 
 function get_eoe_post_by_date( WP_REST_Request $request ) {
@@ -762,3 +768,118 @@ add_filter('graphql_post_object_connection_query_args', function ($query_args, $
   return $query_args;
 
 }, 10, 5);
+
+function get_filtered_exhibitions( WP_REST_Request $request ) {
+
+  // 1. Get Arguments from the Request
+  $chronology = $request->get_param( 'chronology' ); // 'past', 'current', 'future'
+  $sort_field = $request->get_param( 'orderby' );    // 'date' (start) or 'endDate'
+  $sort_order = $request->get_param( 'order' );      // 'ASC' or 'DESC'
+  $limit      = $request->get_param( 'limit' );
+
+  // 2. Set Defaults
+  $posts_per_page = isset( $limit ) ? intval( $limit ) : 10;
+  $order          = ( $sort_order && strtoupper( $sort_order ) === 'ASC' ) ? 'ASC' : 'DESC';
+  
+  // Default sort by start date if not specified
+  $meta_key_sort  = ( $sort_field === 'endDate' ) ? 'endDate' : 'date'; 
+
+  // Get Today's date in Ymd format (standard ACF storage format)
+  // We use current_time to respect the WordPress Timezone setting
+  $today = current_time( 'Ymd' );
+
+  // 3. Build the Query Arguments
+  $args = [
+      'post_type'      => 'exhibition', // Ensure this matches your CPT slug
+      'posts_per_page' => $posts_per_page,
+      'post_status'    => 'publish',
+      'meta_key'       => $meta_key_sort,
+      'orderby'        => 'meta_value_num', // Treat date string as number for sorting
+      'order'          => $order,
+      'meta_query'     => [],
+  ];
+
+  // 4. Handle Chronology Logic
+  if ( $chronology ) {
+      switch ( strtolower( $chronology ) ) {
+          case 'future':
+              // Starts after today
+              $args['meta_query'][] = [
+                  'key'     => 'date', // Start Date field
+                  'value'   => $today,
+                  'compare' => '>',
+                  'type'    => 'NUMERIC'
+              ];
+              break;
+
+          case 'past':
+              // Ended before today
+              $args['meta_query'][] = [
+                  'key'     => 'endDate',
+                  'value'   => $today,
+                  'compare' => '<',
+                  'type'    => 'NUMERIC'
+              ];
+              break;
+
+          case 'current':
+              // Started already (<= Today) AND hasn't ended yet (>= Today)
+              $args['meta_query']['relation'] = 'AND';
+              $args['meta_query'][] = [
+                  'key'     => 'date',
+                  'value'   => $today,
+                  'compare' => '<=',
+                  'type'    => 'NUMERIC'
+              ];
+              $args['meta_query'][] = [
+                  'key'     => 'endDate',
+                  'value'   => $today,
+                  'compare' => '>=',
+                  'type'    => 'NUMERIC'
+              ];
+              break;
+      }
+  }
+
+  // 5. Run the Query
+  $query = new WP_Query( $args );
+  $results = [];
+
+  // 6. Loop and Format Data
+  if ( $query->have_posts() ) {
+      while ( $query->have_posts() ) {
+          $query->the_post();
+          
+          // Get Featured Image Data
+          $feat_img_id  = get_post_thumbnail_id();
+          $feat_img_url = get_the_post_thumbnail_url( get_the_ID(), 'full' ); // Or 'large', 'medium'
+
+          // Get ACF Fields
+          $start_date = get_field( 'date' );
+          $end_date   = get_field( 'endDate' );
+          $location   = get_field( 'location' );
+
+          // Build the object
+          $results[] = [
+              'id'        => get_the_ID(),
+              'title'     => get_the_title(),
+              'slug'      => get_post_field( 'post_name', get_the_ID() ),
+              'content'   => get_the_content(),
+              'acf'       => [
+                  'address'   => get_field('address'), // Added address as per prompt
+                  'date'      => $start_date,
+                  'endDate'   => $end_date,
+                  'location'  => $location,
+              ],
+              'featured_image' => [
+                  'id'  => $feat_img_id,
+                  'url' => $feat_img_url,
+              ],
+          ];
+      }
+      wp_reset_postdata();
+  }
+
+  // 7. Return Response
+  return new WP_REST_Response( $results, 200 );
+}
