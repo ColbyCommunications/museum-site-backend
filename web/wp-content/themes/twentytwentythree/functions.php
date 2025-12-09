@@ -782,7 +782,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   $order          = ( $sort_order && strtoupper( $sort_order ) === 'ASC' ) ? 'ASC' : 'DESC';
   
   // Default sort by start date if not specified
-  $meta_key_sort  = ( $sort_field === 'endDate' ) ? 'endDate' : 'date'; 
+  $meta_key_sort  = ( $sort_field === 'end_date' ) ? 'end_date' : 'date'; 
 
   // Get Today's date in Ymd format (standard ACF storage format)
   // We use current_time to respect the WordPress Timezone setting
@@ -857,7 +857,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
 
           // Get ACF Fields
           $start_date = get_field( 'date' );
-          $end_date   = get_field( 'endDate' );
+          $end_date   = get_field( 'end_date' );
           $location   = get_field( 'location' );
 
           // Build the object
