@@ -770,12 +770,8 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
                 'location'  => $location,
             ],
             '_embedded' => [ 
-              'wp:featuredmedia' => 
-                ['featured_image' => 
-                  [
-                    'id'  => $feat_img_id,
-                    'url' => $feat_img_url,
-                  ]
+              'wp:featuredmedia' => [
+                'featured_image' => $feat_img_data,
               ]
             ],
           ];
