@@ -732,11 +732,14 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
           $end_date   = get_field( 'end_date' );
           $location   = get_field( 'location' );
 
+          $id = get_the_ID();
+
           $results[] = [
-              'id'        => get_the_ID(),
+              'id'        => $id,
               'title'     => [ 'rendered' => get_the_title() ],
-              'slug'      => get_post_field( 'post_name', get_the_ID() ),
+              'slug'      => get_post_field( 'post_name', $id ),
               'content'   => get_the_content(),
+              'link'      => get_permalink($id),
               'acf'       => [
                   'address'   => get_field('address'), 
                   'date'      => $start_date,
