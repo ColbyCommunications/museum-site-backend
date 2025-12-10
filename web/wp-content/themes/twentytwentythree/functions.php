@@ -748,6 +748,8 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
                   'object_title'         => get_field( 'object_title', $feat_img_id ) ?: '',
                   'object_creation_date' => get_field( 'object_creation_date', $feat_img_id ) ?: '',
               ];
+
+              wp_reset_postdata();
           }
           // -------------------------------
           
