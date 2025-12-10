@@ -670,7 +670,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
 
   // 3. Build the Query Arguments
   $args = [
-      'post_type'      => 'exhibition', // [NOTE] Ensure this matches your CPT slug (usually singular)
+      'post_type'      => 'exhibitions', // [NOTE] Ensure this matches your CPT slug (usually singular)
       'posts_per_page' => $posts_per_page,
       'post_status'    => 'publish',
       'meta_key'       => $meta_key_sort,
