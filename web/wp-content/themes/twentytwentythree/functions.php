@@ -774,6 +774,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
             '_embedded' => [ 
               'wp:featuredmedia' => [ $feat_img_data, ]
             ],
+            'featured_media' => get_post_thumbnail_id($id),
           ];
       }
       wp_reset_postdata();
