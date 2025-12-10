@@ -763,6 +763,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
             'id'        => $id,
             'title'     => [ 'rendered' => get_the_title($id) ],
             'slug'      => get_post_field( 'post_name', $id ),
+            'type'      => 'exhibitions',
             'content'   => get_the_content($id),
             'link'      => get_permalink($id),
             'acf'       => [
