@@ -726,6 +726,8 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   if ( $query->have_posts() ) {
       while ( $query->have_posts() ) {
           $query->the_post();
+
+          $id = get_the_ID();
           
           // --- NEW: ROBUST IMAGE LOGIC ---
           $feat_img_id = get_post_thumbnail_id();
@@ -753,11 +755,9 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
           }
           // -------------------------------
           
-          $start_date = get_field( 'date' );
-          $end_date   = get_field( 'end_date' );
-          $location   = get_field( 'location' );
-
-          $id = get_the_ID();
+          $start_date = get_field( 'date', $id );
+          $end_date   = get_field( 'end_date', $id );
+          $location   = get_field( 'location', $id );
 
           $results[] = [
             'id'        => $id,
