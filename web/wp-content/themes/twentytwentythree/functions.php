@@ -740,7 +740,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
               'acf'       => [
                   'address'   => get_field('address'), 
                   'date'      => $start_date,
-                  'endDate'   => $end_date,
+                  'end_date'   => $end_date,
                   'location'  => $location,
               ],
               'featured_image' => [
