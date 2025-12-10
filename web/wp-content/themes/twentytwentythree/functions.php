@@ -766,7 +766,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
             'content'   => get_the_content(),
             'link'      => get_permalink($id),
             'acf'       => [
-                'address'   => get_field('address'), 
+                'address'   => get_field('address', $id), 
                 'date'      => $start_date,
                 'end_date'   => $end_date,
                 'location'  => $location,
