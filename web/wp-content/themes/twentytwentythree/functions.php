@@ -721,12 +721,35 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   $query = new WP_Query( $args );
   $results = [];
 
+  $media_controller = new WP_REST_Attachments_Controller('attachment');
+
   if ( $query->have_posts() ) {
       while ( $query->have_posts() ) {
           $query->the_post();
           
-          $feat_img_id  = get_post_thumbnail_id();
-          $feat_img_url = get_the_post_thumbnail_url( get_the_ID(), 'full' ); 
+          // --- NEW: ROBUST IMAGE LOGIC ---
+          $feat_img_id = get_post_thumbnail_id();
+          $feat_img_data = null; // Default to null if no image
+
+          if ( $feat_img_id ) {
+              // 1. Get the Attachment Post Object
+              $attachment_post = get_post( $feat_img_id );
+
+              // 2. Ask the Controller to generate the standard REST response
+              // This automatically builds 'media_details', 'sizes', 'mime_type', etc.
+              $req = new WP_REST_Request( 'GET', '/wp/v2/media/' . $feat_img_id );
+              $response = $media_controller->prepare_item_for_response( $attachment_post, $req );
+              $feat_img_data = $response->get_data();
+
+              // 3. Inject ACF fields specific to the IMAGE (not the exhibition)
+              // We manually fetch these because standard REST responses often exclude ACF by default
+              $feat_img_data['acf'] = [
+                  'artist_name'          => get_field( 'artist_name', $feat_img_id ) ?: '',
+                  'object_title'         => get_field( 'object_title', $feat_img_id ) ?: '',
+                  'object_creation_date' => get_field( 'object_creation_date', $feat_img_id ) ?: '',
+              ];
+          }
+          // -------------------------------
           
           $start_date = get_field( 'date' );
           $end_date   = get_field( 'end_date' );
@@ -735,21 +758,26 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
           $id = get_the_ID();
 
           $results[] = [
-              'id'        => $id,
-              'title'     => [ 'rendered' => get_the_title() ],
-              'slug'      => get_post_field( 'post_name', $id ),
-              'content'   => get_the_content(),
-              'link'      => get_permalink($id),
-              'acf'       => [
-                  'address'   => get_field('address'), 
-                  'date'      => $start_date,
-                  'end_date'   => $end_date,
-                  'location'  => $location,
-              ],
-              'featured_image' => [
-                  'id'  => $feat_img_id,
-                  'url' => $feat_img_url,
-              ],
+            'id'        => $id,
+            'title'     => [ 'rendered' => get_the_title() ],
+            'slug'      => get_post_field( 'post_name', $id ),
+            'content'   => get_the_content(),
+            'link'      => get_permalink($id),
+            'acf'       => [
+                'address'   => get_field('address'), 
+                'date'      => $start_date,
+                'end_date'   => $end_date,
+                'location'  => $location,
+            ],
+            '_embedded' => [ 
+              'wp:featuredmedia' => 
+                ['featured_image' => 
+                  [
+                    'id'  => $feat_img_id,
+                    'url' => $feat_img_url,
+                  ]
+              ]
+            ],
           ];
       }
       wp_reset_postdata();
