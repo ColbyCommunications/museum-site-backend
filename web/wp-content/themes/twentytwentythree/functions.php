@@ -761,9 +761,9 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
 
           $results[] = [
             'id'        => $id,
-            'title'     => [ 'rendered' => get_the_title() ],
+            'title'     => [ 'rendered' => get_the_title($id) ],
             'slug'      => get_post_field( 'post_name', $id ),
-            'content'   => get_the_content(),
+            'content'   => get_the_content($id),
             'link'      => get_permalink($id),
             'acf'       => [
                 'address'   => get_field('address', $id), 
