@@ -653,48 +653,45 @@ add_action('admin_enqueue_scripts', 'my_admin_confirm_delete_script');
 function get_filtered_exhibitions( WP_REST_Request $request ) {
 
   // 1. Get Arguments from the Request
-  $chronology = $request->get_param( 'chronology' ); // 'past', 'current', 'future'
-  $sort_field = $request->get_param( 'orderby' );    // 'date' (start) or 'endDate'
-  $sort_order = $request->get_param( 'order' );      // 'ASC' or 'DESC'
+  $chronology = $request->get_param( 'chronology' ); 
+  $sort_field = $request->get_param( 'orderby' );    
+  $sort_order = $request->get_param( 'order' );      
   $limit      = $request->get_param( 'limit' );
+  
+  // [NEW] Get the current page number (default to 1)
+  $page_param = $request->get_param( 'page' );
+  $paged      = isset( $page_param ) ? intval( $page_param ) : 1;
 
   // 2. Set Defaults
   $posts_per_page = isset( $limit ) ? intval( $limit ) : 10;
   $order          = ( $sort_order && strtoupper( $sort_order ) === 'ASC' ) ? 'ASC' : 'DESC';
-  
-  // Default sort by start date if not specified
   $meta_key_sort  = ( $sort_field === 'end_date' ) ? 'end_date' : 'date'; 
-
-  // Get Today's date in Ymd format (standard ACF storage format)
-  // We use current_time to respect the WordPress Timezone setting
-  $today = current_time( 'Ymd' );
+  $today          = current_time( 'Ymd' );
 
   // 3. Build the Query Arguments
   $args = [
-      'post_type'      => 'exhibitions', // Ensure this matches your CPT slug
+      'post_type'      => 'exhibition', // [NOTE] Ensure this matches your CPT slug (usually singular)
       'posts_per_page' => $posts_per_page,
       'post_status'    => 'publish',
       'meta_key'       => $meta_key_sort,
-      'orderby'        => 'meta_value_num', // Treat date string as number for sorting
+      'orderby'        => 'meta_value_num', 
       'order'          => $order,
+      'paged'          => $paged, // [NEW] Tell WP_Query which page to fetch
       'meta_query'     => [],
   ];
 
-  // 4. Handle Chronology Logic
+  // 4. Handle Chronology Logic (Same as before)
   if ( $chronology ) {
       switch ( strtolower( $chronology ) ) {
           case 'future':
-              // Starts after today
               $args['meta_query'][] = [
-                  'key'     => 'date', // Start Date field
+                  'key'     => 'date', 
                   'value'   => $today,
                   'compare' => '>',
                   'type'    => 'NUMERIC'
               ];
               break;
-
           case 'past':
-              // Ended before today
               $args['meta_query'][] = [
                   'key'     => 'end_date',
                   'value'   => $today,
@@ -702,9 +699,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
                   'type'    => 'NUMERIC'
               ];
               break;
-
           case 'current':
-              // Started already (<= Today) AND hasn't ended yet (>= Today)
               $args['meta_query']['relation'] = 'AND';
               $args['meta_query'][] = [
                   'key'     => 'date',
@@ -726,29 +721,24 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   $query = new WP_Query( $args );
   $results = [];
 
-  // 6. Loop and Format Data
   if ( $query->have_posts() ) {
-    
       while ( $query->have_posts() ) {
           $query->the_post();
           
-          // Get Featured Image Data
           $feat_img_id  = get_post_thumbnail_id();
-          $feat_img_url = get_the_post_thumbnail_url( get_the_ID(), 'full' ); // Or 'large', 'medium'
-
-          // Get ACF Fields
+          $feat_img_url = get_the_post_thumbnail_url( get_the_ID(), 'full' ); 
+          
           $start_date = get_field( 'date' );
           $end_date   = get_field( 'end_date' );
           $location   = get_field( 'location' );
 
-          // Build the object
           $results[] = [
               'id'        => get_the_ID(),
               'title'     => get_the_title(),
               'slug'      => get_post_field( 'post_name', get_the_ID() ),
               'content'   => get_the_content(),
               'acf'       => [
-                  'address'   => get_field('address'), // Added address as per prompt
+                  'address'   => get_field('address'), 
                   'date'      => $start_date,
                   'endDate'   => $end_date,
                   'location'  => $location,
@@ -762,6 +752,13 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
       wp_reset_postdata();
   }
 
-  // 7. Return Response
-  return new WP_REST_Response( $results, 200 );
+  // 6. [NEW] Create the Response Object
+  $response = new WP_REST_Response( $results, 200 );
+
+  // 7. [NEW] Add Pagination Headers
+  // This allows the frontend to know how many pages exist without polluting the results array
+  $response->header( 'X-WP-Total', $query->found_posts ); // Total number of exhibitions found
+  $response->header( 'X-WP-TotalPages', $query->max_num_pages ); // Total number of pages available
+
+  return $response;
 }
