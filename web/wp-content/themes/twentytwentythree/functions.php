@@ -726,9 +726,8 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   if ( $query->have_posts() ) {
       while ( $query->have_posts() ) {
           
-
-          global $post;
-          $current_exhibition = $post;
+          // global $post;
+          $current_exhibition = $query->the_post();
 
           $id = get_the_ID();
           
