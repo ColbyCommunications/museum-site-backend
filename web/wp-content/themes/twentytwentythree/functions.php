@@ -665,7 +665,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   // 2. Set Defaults
   $posts_per_page = isset( $limit ) ? intval( $limit ) : 10;
   $order          = ( $sort_order && strtoupper( $sort_order ) === 'ASC' ) ? 'ASC' : 'DESC';
-  $meta_key_sort  = $sort_field; 
+  // $meta_key_sort  = $sort_field; 
   $today          = current_time( 'Ymd' );
 
   // 3. Build the Query Arguments
@@ -673,12 +673,18 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
       'post_type'      => 'exhibitions', // [NOTE] Ensure this matches your CPT slug (usually singular)
       'posts_per_page' => $posts_per_page,
       'post_status'    => 'publish',
-      'meta_key'       => $meta_key_sort,
-      'orderby'        => 'meta_value_num', 
+      
       'order'          => $order,
       'paged'          => $paged, // [NEW] Tell WP_Query which page to fetch
       'meta_query'     => [],
   ];
+
+  if ($sort_field !== 'title') {
+    $args['meta_key'] = $sort_field;
+    $args['orderby'] = 'meta_value_num';
+  } else {
+    $args['orderby'] = 'title';
+  }
 
   // 4. Handle Chronology Logic (Same as before)
   if ( $chronology ) {
@@ -725,7 +731,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
 
   if ( $query->have_posts() ) {
       while ( $query->have_posts() ) {
-          
+        
           // global $post;
           $current_exhibition = $query->the_post();
 
