@@ -727,6 +727,9 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
       while ( $query->have_posts() ) {
           $query->the_post();
 
+          global $post;
+          $current_exhibition = $post;
+
           $id = get_the_ID();
           
           // --- NEW: ROBUST IMAGE LOGIC ---
@@ -751,7 +754,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
                   'object_creation_date' => get_field( 'object_creation_date', $feat_img_id ) ?: '',
               ];
 
-              wp_reset_postdata();
+              setup_postdata( $current_exhibition );
           }
           // -------------------------------
           
