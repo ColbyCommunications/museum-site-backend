@@ -665,7 +665,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   // 2. Set Defaults
   $posts_per_page = isset( $limit ) ? intval( $limit ) : 10;
   $order          = ( $sort_order && strtoupper( $sort_order ) === 'ASC' ) ? 'ASC' : 'DESC';
-  $meta_key_sort  = ( $sort_field === 'end_date' ) ? 'end_date' : 'date'; 
+  $meta_key_sort  = $sort_field; 
   $today          = current_time( 'Ymd' );
 
   // 3. Build the Query Arguments
@@ -727,8 +727,8 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
       while ( $query->have_posts() ) {
           
 
-          // global $post;
-          $current_exhibition =$query->the_post();
+          global $post;
+          $current_exhibition = $post;
 
           $id = get_the_ID();
           
