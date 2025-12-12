@@ -138,7 +138,13 @@ add_action( 'rest_api_init', function() {
     'methods'             => 'GET',
     'callback'            => 'get_filtered_exhibitions',
     'permission_callback' => '__return_true', // Public endpoint
-]);
+  ]);
+  
+  register_rest_route( 'custom/v1', '/events', [
+    'methods'             => 'GET',
+    'callback'            => 'get_filtered_events',
+    'permission_callback' => '__return_true', // Public endpoint
+  ]);
 });
 
 function get_eoe_post_by_date( WP_REST_Request $request ) {
@@ -672,6 +678,161 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   // 3. Build the Query Arguments
   $args = [
       'post_type'      => 'exhibitions', // [NOTE] Ensure this matches your CPT slug (usually singular)
+      'posts_per_page' => $posts_per_page,
+      'post_status'    => 'publish',
+      'order'          => $order,
+      'paged'          => $paged, // [NEW] Tell WP_Query which page to fetch
+      'meta_query'     => [],
+  ];
+
+  // [NEW] Add Search Parameter to Query
+  if ( ! empty( $search_term ) ) {
+    $args['s'] = sanitize_text_field( $search_term );
+  }
+
+  if ($sort_field !== 'title') {
+    $args['meta_key'] = $sort_field;
+    $args['orderby'] = 'meta_value_num';
+  } else {
+    $args['orderby'] = 'title';
+  }
+
+  // 4. Handle Chronology Logic (Same as before)
+  if ( $chronology ) {
+      switch ( strtolower( $chronology ) ) {
+          case 'future':
+              $args['meta_query'][] = [
+                  'key'     => 'date', 
+                  'value'   => $today,
+                  'compare' => '>',
+                  'type'    => 'NUMERIC'
+              ];
+              break;
+          case 'past':
+              $args['meta_query'][] = [
+                  'key'     => 'end_date',
+                  'value'   => $today,
+                  'compare' => '<',
+                  'type'    => 'NUMERIC'
+              ];
+              break;
+          case 'current':
+              $args['meta_query']['relation'] = 'AND';
+              $args['meta_query'][] = [
+                  'key'     => 'date',
+                  'value'   => $today,
+                  'compare' => '<=',
+                  'type'    => 'NUMERIC'
+              ];
+              $args['meta_query'][] = [
+                  'key'     => 'end_date',
+                  'value'   => $today,
+                  'compare' => '>=',
+                  'type'    => 'NUMERIC'
+              ];
+              break;
+      }
+  }
+
+  // 5. Run the Query
+  $query = new WP_Query( $args );
+  $results = [];
+
+  $media_controller = new WP_REST_Attachments_Controller('attachment');
+
+  if ( $query->have_posts() ) {
+      while ( $query->have_posts() ) {
+        
+          // global $post;
+          $current_exhibition = $query->the_post();
+
+          $id = get_the_ID();
+          
+          // --- NEW: ROBUST IMAGE LOGIC ---
+          $feat_img_id = get_post_thumbnail_id();
+          $feat_img_data = null; // Default to null if no image
+
+          if ( $feat_img_id ) {
+              // 1. Get the Attachment Post Object
+              $attachment_post = get_post( $feat_img_id );
+
+              // 2. Ask the Controller to generate the standard REST response
+              // This automatically builds 'media_details', 'sizes', 'mime_type', etc.
+              $req = new WP_REST_Request( 'GET', '/wp/v2/media/' . $feat_img_id );
+              $response = $media_controller->prepare_item_for_response( $attachment_post, $req );
+              $feat_img_data = $response->get_data();
+
+              // 3. Inject ACF fields specific to the IMAGE (not the exhibition)
+              // We manually fetch these because standard REST responses often exclude ACF by default
+              $feat_img_data['acf'] = [
+                  'artist_name'          => get_field( 'artist_name', $feat_img_id ) ?: '',
+                  'object_title'         => get_field( 'object_title', $feat_img_id ) ?: '',
+                  'object_creation_date' => get_field( 'object_creation_date', $feat_img_id ) ?: '',
+              ];
+
+              setup_postdata( $current_exhibition );
+          }
+          // -------------------------------
+          
+          $start_date = get_field( 'date', $id );
+          $end_date   = get_field( 'end_date', $id );
+          $location   = get_field( 'location', $id );
+
+          $results[] = [
+            'id'        => $id,
+            'title'     => [ 'rendered' => get_the_title($id) ],
+            'slug'      => get_post_field( 'post_name', $id ),
+            'type'      => 'exhibitions',
+            'content'   => get_the_content($id),
+            'link'      => get_permalink($id),
+            'acf'       => [
+                'address'   => get_field('address', $id), 
+                'date'      => $start_date,
+                'end_date'   => $end_date,
+                'location'  => $location,
+            ],
+            '_embedded' => [ 
+              'wp:featuredmedia' => [ $feat_img_data, ]
+            ],
+            'featured_media' => get_post_thumbnail_id($id),
+          ];
+      }
+      wp_reset_postdata();
+  }
+
+  // 6. [NEW] Create the Response Object
+  $response = new WP_REST_Response( $results, 200 );
+
+  // 7. [NEW] Add Pagination Headers
+  // This allows the frontend to know how many pages exist without polluting the results array
+  $response->header( 'X-WP-Total', $query->found_posts ); // Total number of exhibitions found
+  $response->header( 'X-WP-TotalPages', $query->max_num_pages ); // Total number of pages available
+
+  return $response;
+}
+
+function get_filtered_events( WP_REST_Request $request ) {
+
+  // 1. Get Arguments from the Request
+  $chronology = $request->get_param( 'chronology' ); 
+  $sort_field = $request->get_param( 'orderby' );    
+  $sort_order = $request->get_param( 'order' );      
+  $limit      = $request->get_param( 'limit' );
+  $search_term = $request->get_param( 'search' ); // [NEW] Get search term
+  
+  // [NEW] Get the current page number (default to 1)
+  $page_param = $request->get_param( 'page' );
+  $paged      = isset( $page_param ) ? intval( $page_param ) : 1;
+
+  // 2. Set Defaults
+  $posts_per_page = isset( $limit ) ? intval( $limit ) : 10;
+  $order          = ( $sort_order && strtoupper( $sort_order ) === 'ASC' ) ? 'ASC' : 'DESC';
+  // $meta_key_sort  = $sort_field; 
+  $today          = current_time( 'Ymd' );
+
+  // 3. Build the Query Arguments
+  $args = [
+      'post_type'      => 'events', // [NOTE] Ensure this matches your CPT slug (usually singular)
       'posts_per_page' => $posts_per_page,
       'post_status'    => 'publish',
       'order'          => $order,
