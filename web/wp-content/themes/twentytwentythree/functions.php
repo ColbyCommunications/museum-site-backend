@@ -657,6 +657,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   $sort_field = $request->get_param( 'orderby' );    
   $sort_order = $request->get_param( 'order' );      
   $limit      = $request->get_param( 'limit' );
+  $search_term = $request->get_param( 'search' ); // [NEW] Get search term
   
   // [NEW] Get the current page number (default to 1)
   $page_param = $request->get_param( 'page' );
@@ -673,11 +674,15 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
       'post_type'      => 'exhibitions', // [NOTE] Ensure this matches your CPT slug (usually singular)
       'posts_per_page' => $posts_per_page,
       'post_status'    => 'publish',
-      
       'order'          => $order,
       'paged'          => $paged, // [NEW] Tell WP_Query which page to fetch
       'meta_query'     => [],
   ];
+
+  // [NEW] Add Search Parameter to Query
+  if ( ! empty( $search_term ) ) {
+    $args['s'] = sanitize_text_field( $search_term );
+  }
 
   if ($sort_field !== 'title') {
     $args['meta_key'] = $sort_field;
