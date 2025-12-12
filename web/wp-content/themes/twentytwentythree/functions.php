@@ -139,7 +139,7 @@ add_action( 'rest_api_init', function() {
     'callback'            => 'get_filtered_exhibitions',
     'permission_callback' => '__return_true', // Public endpoint
   ]);
-  
+
   register_rest_route( 'custom/v1', '/events', [
     'methods'             => 'GET',
     'callback'            => 'get_filtered_events',
@@ -664,7 +664,8 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   $sort_order = $request->get_param( 'order' );      
   $limit      = $request->get_param( 'limit' );
   $search_term = $request->get_param( 'search' ); // [NEW] Get search term
-  
+  $location_param = $request->get_param( 'location' );
+
   // [NEW] Get the current page number (default to 1)
   $page_param = $request->get_param( 'page' );
   $paged      = isset( $page_param ) ? intval( $page_param ) : 1;
@@ -695,6 +696,24 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
     $args['orderby'] = 'meta_value_num';
   } else {
     $args['orderby'] = 'title';
+  }
+
+  if ( ! empty( $location_param ) ) {
+      
+    // 1. Normalize to Array
+    // If it came in as ?location=campus, it's a string.
+    // If it came in as ?location[0]=campus&location[1]=downtown, it's an array.
+    $locations = is_array($location_param) ? $location_param : [ $location_param ];
+
+    // 2. Sanitize the array values
+    $locations = array_map( 'sanitize_text_field', $locations );
+
+    // 3. Add Meta Query with 'IN' comparison
+    $args['meta_query'][] = [
+        'key'     => 'location', // Your ACF field name
+        'value'   => $locations,
+        'compare' => 'IN',       // 'IN' allows matching ANY value in the array
+    ];
   }
 
   // 4. Handle Chronology Logic (Same as before)
@@ -819,7 +838,8 @@ function get_filtered_events( WP_REST_Request $request ) {
   $sort_order = $request->get_param( 'order' );      
   $limit      = $request->get_param( 'limit' );
   $search_term = $request->get_param( 'search' ); // [NEW] Get search term
-  
+  $location_param = $request->get_param( 'location' );
+
   // [NEW] Get the current page number (default to 1)
   $page_param = $request->get_param( 'page' );
   $paged      = isset( $page_param ) ? intval( $page_param ) : 1;
@@ -850,6 +870,24 @@ function get_filtered_events( WP_REST_Request $request ) {
     $args['orderby'] = 'meta_value_num';
   } else {
     $args['orderby'] = 'title';
+  }
+
+  if ( ! empty( $location_param ) ) {
+      
+    // 1. Normalize to Array
+    // If it came in as ?location=campus, it's a string.
+    // If it came in as ?location[0]=campus&location[1]=downtown, it's an array.
+    $locations = is_array($location_param) ? $location_param : [ $location_param ];
+
+    // 2. Sanitize the array values
+    $locations = array_map( 'sanitize_text_field', $locations );
+
+    // 3. Add Meta Query with 'IN' comparison
+    $args['meta_query'][] = [
+        'key'     => 'location', // Your ACF field name
+        'value'   => $locations,
+        'compare' => 'IN',       // 'IN' allows matching ANY value in the array
+    ];
   }
 
   // 4. Handle Chronology Logic (Same as before)
