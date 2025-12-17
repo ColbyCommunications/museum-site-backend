@@ -1014,6 +1014,8 @@ function get_filtered_events( WP_REST_Request $request ) {
           
           $start_date = get_field( 'date', $id );
           $end_date   = get_field( 'end_date', $id );
+          $start_time = get_field( 'start_time', $id );
+          $end_time   = get_field( 'end_time', $id );
           $location   = get_field( 'location', $id );
 
           $results[] = [
@@ -1028,6 +1030,8 @@ function get_filtered_events( WP_REST_Request $request ) {
                 'date'      => $start_date,
                 'end_date'   => $end_date,
                 'location'  => $location,
+                'start_time' => $start_time,
+                'end_time' => $end_time,
             ],
             '_embedded' => [ 
               'wp:featuredmedia' => [ $feat_img_data, ]
