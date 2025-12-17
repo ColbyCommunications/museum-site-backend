@@ -188,7 +188,7 @@ function get_eoe_by_date( WP_REST_Request $request ) {
     $tax_q = array(
       'taxonomy' => 'variants',
       'field' => 'slug',
-      'terms' => 'travelling',
+      'terms' => 'traveling',
     );
   } else {
     if ($chronology == 'past') {
