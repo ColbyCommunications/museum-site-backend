@@ -182,26 +182,35 @@ function get_eoe_by_date( WP_REST_Request $request ) {
   $chronology = $request->get_param('chronology');
   $page = $request->get_param('page');
   $per_page = $request->get_param('per_page');
+  $variant = $request->get_param('variant');
 
-  if ($chronology == 'past') {
+  if ($variant) {
     $tax_q = array(
-      'taxonomy' => 'chronologies',
+      'taxonomy' => 'variants',
       'field' => 'slug',
-      'terms' => 'past',
-    );
-  } elseif ($chronology == 'current' || $chronology == 'future') {
-    $tax_q = array(
-      'taxonomy' => 'chronologies',
-      'field' => 'slug',
-      'terms' => $chronology,
+      'terms' => 'travelling',
     );
   } else {
-    $tax_q = array(
-      'taxonomy' => 'chronologies',
-      'field' => 'slug',
-      'terms' => 'past',
-      'operator' => 'NOT IN'
-    );
+    if ($chronology == 'past') {
+      $tax_q = array(
+        'taxonomy' => 'chronologies',
+        'field' => 'slug',
+        'terms' => 'past',
+      );
+    } elseif ($chronology == 'current' || $chronology == 'future') {
+      $tax_q = array(
+        'taxonomy' => 'chronologies',
+        'field' => 'slug',
+        'terms' => $chronology,
+      );
+    } else {
+      $tax_q = array(
+        'taxonomy' => 'chronologies',
+        'field' => 'slug',
+        'terms' => 'past',
+        'operator' => 'NOT IN'
+      );
+    }
   }
 
   $ee = get_posts(array(
