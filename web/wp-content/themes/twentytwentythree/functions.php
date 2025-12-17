@@ -186,7 +186,7 @@ function get_eoe_by_date( WP_REST_Request $request ) {
 
   if ($variant) {
     $tax_q = array(
-      'taxonomy' => 'variants',
+      'taxonomy' => 'variant',
       'terms' => $variant,
     );
   } else {
