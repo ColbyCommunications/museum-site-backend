@@ -939,21 +939,36 @@ function get_filtered_events( WP_REST_Request $request ) {
                   'type'    => 'NUMERIC'
               ];
               break;
-              case 'all':
-                $args['meta_query']['relation'] = 'OR';
-                $args['meta_query'][] = [
-                    'key'     => 'date',
-                    'value'   => $today,
-                    'compare' => '<=',
-                    'type'    => 'NUMERIC'
-                ];
-                $args['meta_query'][] = [
-                    'key'     => 'end_date',
-                    'value'   => $today,
-                    'compare' => '>=',
-                    'type'    => 'NUMERIC'
-                ];
-                break;
+          case 'all':
+            $args['meta_query']['relation'] = 'OR';
+            $args['meta_query'][] = [
+                'key'     => 'date',
+                'value'   => $today,
+                'compare' => '<=',
+                'type'    => 'NUMERIC'
+            ];
+            $args['meta_query'][] = [
+                'key'     => 'end_date',
+                'value'   => $today,
+                'compare' => '>=',
+                'type'    => 'NUMERIC'
+            ];
+            break;
+          case 'current-future':
+            $args['meta_query']['relation'] = 'OR';
+            $args['meta_query'][] = [
+                'key'     => 'date',
+                'value'   => $today,
+                'compare' => '>',
+                'type'    => 'NUMERIC'
+            ];
+            $args['meta_query'][] = [
+                'key'     => 'end_date',
+                'value'   => $today,
+                'compare' => '>=',
+                'type'    => 'NUMERIC'
+            ];
+            break;
       }
   }
 
