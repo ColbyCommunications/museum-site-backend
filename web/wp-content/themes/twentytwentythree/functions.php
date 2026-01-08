@@ -635,18 +635,21 @@ function get_breadcrumbs( $data ) {
   return $breadcrumbs;
 }
 
-function my_custom_rest_cors() {
+add_action( 'rest_api_init', function() {
+    
+  // 1. Remove default CORS filters to prevent conflicts
   remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
+  
+  // 2. Add our own headers
   add_filter( 'rest_pre_serve_request', function( $value ) {
-    header( 'Access-Control-Allow-Origin: *' );
-    header( 'Access-Control-Allow-Methods: GET' );
-    header( 'Access-Control-Allow-Credentials: true' );
-    header( 'Access-Control-Expose-Headers: Link', false );
-
-    return $value;
-  } );
-}
-add_action( 'rest_api_init', 'my_custom_rest_cors', 15 );
+      header( 'Access-Control-Allow-Origin: *' ); // Replace '*' with 'https://your-frontend.com' for better security later
+      header( 'Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE' );
+      header( 'Access-Control-Allow-Credentials: true' );
+      header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Type, X-Requested-With' );
+      
+      return $value;
+  });
+}, 15 );
 
 function my_admin_confirm_delete_script() {
   // Get the path to your script
