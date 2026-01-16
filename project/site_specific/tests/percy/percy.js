@@ -19,7 +19,7 @@ let siteFull = `https://${branch}.colby-museum-frontend.pages.dev`;
 
     // Test Page
     const testPage = await browser.newPage();
-    await testPage.goto(`${siteFull}/demo-page`);
+    await testPage.goto(`${siteFull}/learn/demo-page`);
     await new Promise(function (resolve) {
         setTimeout(async function () {
             await testPage.evaluate(scrollToBottom, scrollOptions);
