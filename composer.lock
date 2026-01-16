@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "841b987397d8db75b31058bceae0bf80",
+    "content-hash": "ace51d1ca51c33ceb170af770b3fdf1d",
     "packages": [
         {
             "name": "colbycommunications/advanced-custom-fields-pro",
@@ -6500,15 +6500,15 @@
         },
         {
             "name": "wpackagist-plugin/cf-images",
-            "version": "1.9.5",
+            "version": "1.9.8",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/cf-images/",
-                "reference": "tags/1.9.5"
+                "reference": "tags/1.9.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/cf-images.1.9.5.zip"
+                "url": "https://downloads.wordpress.org/plugin/cf-images.1.9.8.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -6572,15 +6572,15 @@
         },
         {
             "name": "wpackagist-plugin/filebird",
-            "version": "6.4.9",
+            "version": "6.5.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/filebird/",
-                "reference": "tags/6.4.9"
+                "reference": "tags/6.5.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/filebird.6.4.9.zip"
+                "url": "https://downloads.wordpress.org/plugin/filebird.6.5.2.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -6608,15 +6608,15 @@
         },
         {
             "name": "wpackagist-plugin/post-type-switcher",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/post-type-switcher/",
-                "reference": "tags/4.0.0"
+                "reference": "trunk"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/post-type-switcher.4.0.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/post-type-switcher.zip?timestamp=1762559556"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -6680,15 +6680,15 @@
         },
         {
             "name": "wpackagist-plugin/term-management-tools",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/term-management-tools/",
-                "reference": "tags/2.0.1"
+                "reference": "tags/2.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/term-management-tools.2.0.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/term-management-tools.2.0.2.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -6752,15 +6752,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-graphql",
-            "version": "2.5.3",
+            "version": "2.6.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-graphql/",
-                "reference": "tags/2.5.3"
+                "reference": "tags/2.6.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-graphql.2.5.3.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-graphql.2.6.0.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
