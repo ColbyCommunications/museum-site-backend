@@ -645,8 +645,10 @@ add_action( 'rest_api_init', function() {
       header( 'Access-Control-Allow-Origin: *' ); // Replace '*' with 'https://your-frontend.com' for better security later
       header( 'Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE' );
       header( 'Access-Control-Allow-Credentials: true' );
-      header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Type, X-Requested-With' );
       
+      // 🛑 I added 'User-Agent' to the end of this list
+      header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Type, X-Requested-With, User-Agent' );
+
       return $value;
   });
 }, 15 );
