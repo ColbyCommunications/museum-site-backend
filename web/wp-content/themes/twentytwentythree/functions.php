@@ -837,7 +837,7 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
               'wp:featuredmedia' => [ $feat_img_data, ]
             ],
             'featured_media' => get_post_thumbnail_id($id),
-            'post_excerpt' => $current_exhibition->post_excerpt,
+            'post_excerpt' => get_the_excerpt($id),
           ];
       }
       wp_reset_postdata();
@@ -1046,7 +1046,7 @@ function get_filtered_events( WP_REST_Request $request ) {
               'wp:featuredmedia' => [ $feat_img_data, ]
             ],
             'featured_media' => get_post_thumbnail_id($id),
-            'post_excerpt' => $current_exhibition->post_excerpt,
+            'post_excerpt' => get_the_excerpt($id),
           ];
       }
       wp_reset_postdata();
