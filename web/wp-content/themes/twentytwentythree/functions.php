@@ -679,6 +679,8 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
   $search_term = $request->get_param( 'search' ); // [NEW] Get search term
   $location_param = $request->get_param( 'location' );
 
+  $variant = $request->get_param('variant');
+
   // [NEW] Get the current page number (default to 1)
   $page_param = $request->get_param( 'page' );
   $paged      = isset( $page_param ) ? intval( $page_param ) : 1;
@@ -698,6 +700,17 @@ function get_filtered_exhibitions( WP_REST_Request $request ) {
       'paged'          => $paged, // [NEW] Tell WP_Query which page to fetch
       'meta_query'     => [],
   ];
+
+  if ($variant) {
+    $tax_q = array(
+      'taxonomy' => 'variant',
+      'terms' => $variant,
+    );
+
+    $args['tax_query'] = array(
+      $tax_q
+    );
+  }
 
   // [NEW] Add Search Parameter to Query
   if ( ! empty( $search_term ) ) {
