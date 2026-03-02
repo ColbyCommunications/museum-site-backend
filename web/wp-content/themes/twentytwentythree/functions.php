@@ -489,6 +489,19 @@ function my_acf_init() {
         'keywords'			  => array( 'embed', 'embeds', 'embed code' ),
       )
     );
+    
+    // register embed
+    acf_register_block(
+      array(
+        'name'				    => 'pdf-embed',
+        'title'				    => __('PDF Embed'),
+        'description'	    => __('PDF embed viewer'),
+        'render_callback'	=> 'my_acf_block_render_callback',
+        'category'			  => 'layout',
+        'icon'				    => 'block-default',
+        'keywords'			  => array( 'embed', 'embeds', 'embed code', 'pdf' ),
+      )
+    );
   }
 }
 
