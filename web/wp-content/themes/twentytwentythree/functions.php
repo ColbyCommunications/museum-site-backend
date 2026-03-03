@@ -9,25 +9,6 @@ add_action( 'init', 'register_post_types' );
 add_action( 'init', 'register_taxonomies' );
 add_action( 'init', 'register_menus' );
 
-
-add_action('send_headers', function () {
-  $uri = $_SERVER['REQUEST_URI'] ?? '';
-  if (!preg_match('~\.pdf(\?|$)~i', $uri)) {
-    return;
-  }
-
-  header('Access-Control-Allow-Origin: *');
-  header('Access-Control-Allow-Methods: GET, HEAD, OPTIONS');
-  header('Access-Control-Allow-Headers: Content-Type, Accept, Origin, X-Requested-With, Range');
-  header('Access-Control-Expose-Headers: Accept-Ranges, Content-Encoding, Content-Length, Content-Range');
-
-  if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
-    status_header(204);
-    exit;
-  }
-});
-
-
 /**
  * Add excerpt to search API endpoint.
  */
