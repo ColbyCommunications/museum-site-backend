@@ -8,16 +8,24 @@ add_action( 'after_setup_theme', 'theme_supports' );
 add_action( 'init', 'register_post_types' );
 add_action( 'init', 'register_taxonomies' );
 add_action( 'init', 'register_menus' );
-add_action( 'init', 'add_cors_for_pdfs' );
 
-function add_cors_for_pdfs() {
-  if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( $_SERVER['REQUEST_URI'], '.pdf' ) !== false ) {
-      header( "Access-Control-Allow-Origin: *" ); // * allows all origins. Specify a specific origin for better security.
-      header( "Access-Control-Allow-Methods: GET, HEAD, OPTIONS" );
-      header( "Access-Control-Allow-Headers: Content-Type, Accept, Origin, X-Requested-With, Range" );
-      header( "Access-Control-Expose-Headers: Accept-Ranges, Content-Encoding, Content-Length, Content-Range" );
+
+add_action('send_headers', function () {
+  $uri = $_SERVER['REQUEST_URI'] ?? '';
+  if (!preg_match('~\.pdf(\?|$)~i', $uri)) {
+    return;
   }
-}
+
+  header('Access-Control-Allow-Origin: *');
+  header('Access-Control-Allow-Methods: GET, HEAD, OPTIONS');
+  header('Access-Control-Allow-Headers: Content-Type, Accept, Origin, X-Requested-With, Range');
+  header('Access-Control-Expose-Headers: Accept-Ranges, Content-Encoding, Content-Length, Content-Range');
+
+  if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
+    status_header(204);
+    exit;
+  }
+});
 
 
 /**
