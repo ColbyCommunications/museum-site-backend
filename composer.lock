@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f373538d167562ebdfc6a79fb2f80e16",
+    "content-hash": "38d16bb0077b95d6a28b452afdb89f2e",
     "packages": [
         {
             "name": "airesvsg/acf-to-rest-api",
@@ -6731,15 +6731,15 @@
         },
         {
             "name": "wpackagist-plugin/rest-api-blocks",
-            "version": "2.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/rest-api-blocks/",
-                "reference": "tags/2.0.0"
+                "reference": "tags/1.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/rest-api-blocks.2.0.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/rest-api-blocks.1.0.2.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
