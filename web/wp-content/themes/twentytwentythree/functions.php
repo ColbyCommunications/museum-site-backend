@@ -655,7 +655,7 @@ add_action( 'rest_api_init', function() {
   
   // 2. Add our own headers
   add_filter( 'rest_pre_serve_request', function( $value ) {
-      header( 'Access-Control-Allow-Origin: *' ); // Replace '*' with 'https://your-frontend.com' for better security later
+      header( 'Access-Control-Allow-Origin: https://museum.colby.edu' ); // Replace '*' with 'https://your-frontend.com' for better security later
       header( 'Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE' );
       header( 'Access-Control-Allow-Credentials: true' );
       
