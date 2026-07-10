@@ -660,7 +660,7 @@ add_action( 'rest_api_init', function() {
       header( 'Access-Control-Allow-Credentials: true' );
       
       // 🛑 I added 'User-Agent' to the end of this list
-      header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Type, X-Requested-With, User-Agent' );
+      header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Type, X-Requested-With, User-Agent, Cache-Control, Pragma' );
 
       return $value;
   });
