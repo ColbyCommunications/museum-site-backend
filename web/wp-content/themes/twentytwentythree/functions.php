@@ -1107,3 +1107,27 @@ add_filter('preview_post_link', function ($link, $post) {
       $secret_token
   );
 }, 10, 2);
+
+add_action('template_redirect', function () {
+  if (is_preview() || isset($_GET['preview'])) {
+      // Extract post ID from current query or URL params
+      $post_id = get_the_ID() 
+          ?: (isset($_GET['page_id']) ? intval($_GET['page_id']) 
+          : (isset($_GET['p']) ? intval($_GET['p']) : 0));
+
+      $post_type = get_post_type($post_id) 
+          ?: (isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : 'page');
+
+      if ($post_id) {
+          $redirect_url = sprintf(
+              '%s/preview?id=%d&type=%s',
+              untrailingslashit('http://localhost:3000'),
+              $post_id,
+              $post_type
+          );
+
+          wp_redirect($redirect_url);
+          exit;
+      }
+  }
+});
