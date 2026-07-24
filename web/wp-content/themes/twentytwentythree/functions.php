@@ -1093,3 +1093,17 @@ function get_filtered_events( WP_REST_Request $request ) {
 
   return $response;
 }
+
+add_filter('preview_post_link', function ($link, $post) {
+  $frontend_url = 'http://localhost:3000/'; // Nuxt production or staging URL
+  $secret_token = defined('NUXT_PREVIEW_SECRET') ? NUXT_PREVIEW_SECRET : '';
+  
+  // Pass Post ID, post type, and a secret token to verify authenticity
+  return sprintf(
+      '%s/api/preview?id=%d&type=%s&secret=%s',
+      $frontend_url,
+      $post->ID,
+      $post->post_type,
+      $secret_token
+  );
+}, 10, 2);
