@@ -7,7 +7,6 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // wp-config.php
-define('NUXT_PREVIEW_SECRET', '12345');
 define('PLATFORM_VARIABLES', json_decode($_ENV['PLATFORM_VARS'], true));
 
 // Set host values

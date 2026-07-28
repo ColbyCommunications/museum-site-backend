@@ -1096,7 +1096,7 @@ function get_filtered_events( WP_REST_Request $request ) {
 
 add_filter('preview_post_link', function ($link, $post) {
   $frontend_url = 'http://localhost:3000/'; // Nuxt production or staging URL
-  $secret_token = defined('NUXT_PREVIEW_SECRET') ? NUXT_PREVIEW_SECRET : '';
+  $secret_token = defined('PLATFORM_VARIABLES') ? PLATFORM_VARIABLES['NUXT_PREVIEW_SECRET'] : '';
   
   // Pass Post ID, post type, and a secret token to verify authenticity
   return sprintf(
