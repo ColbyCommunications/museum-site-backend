@@ -6,6 +6,7 @@ require_once 'vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+// wp-config.php
 define('PLATFORM_VARIABLES', json_decode($_ENV['PLATFORM_VARS'], true));
 
 // Set host values

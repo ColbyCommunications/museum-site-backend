@@ -5,7 +5,7 @@ on:
     branches-ignore:
       - 'master'
 env:
-  PLATFORMSH_CLI_TOKEN: ${{ secrets.PLATFORMSH_CLI_TOKEN }}
+  UPSUN_CLI_TOKEN: ${{ secrets.PLATFORMSH_CLI_TOKEN }}
   WEBMASTER_GITHUB_ACTIONS_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
   PLATFORM_PROJECT_ID: ${{ secrets.PLATFORM_PROJECT_ID }}
   PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
@@ -20,9 +20,9 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.WEBMASTER_SSH_PRIVATE_KEY }}
 
-      - name: Install Psh CLI
+      - name: Install Upsun CLI
         run: |
-          curl -sS https://platform.sh/cli/installer | php
+          curl -fsSL https://raw.githubusercontent.com/upsun/cli/main/installer.sh | bash
 
       - name: Load certificate
         run: ~/.platformsh/bin/platform ssh-cert:load -y -vv

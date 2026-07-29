@@ -655,7 +655,7 @@ add_action( 'rest_api_init', function() {
   
   // 2. Add our own headers
   add_filter( 'rest_pre_serve_request', function( $value ) {
-      header( 'Access-Control-Allow-Origin: https://museum.colby.edu' ); // Replace '*' with 'https://your-frontend.com' for better security later
+      header( 'Access-Control-Allow-Origin: *' ); // Replace '*' with 'https://your-frontend.com' for better security later
       header( 'Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE' );
       header( 'Access-Control-Allow-Credentials: true' );
       
@@ -1093,3 +1093,41 @@ function get_filtered_events( WP_REST_Request $request ) {
 
   return $response;
 }
+
+add_filter('preview_post_link', function ($link, $post) {
+  $frontend_url = 'https://museum.colby.edu/'; // Nuxt production or staging URL
+  $secret_token = defined('PLATFORM_VARIABLES') ? PLATFORM_VARIABLES['NUXT_PREVIEW_SECRET'] : '';
+  
+  // Pass Post ID, post type, and a secret token to verify authenticity
+  return sprintf(
+      '%s/api/preview?id=%d&type=%s&secret=%s',
+      $frontend_url,
+      $post->ID,
+      $post->post_type,
+      $secret_token
+  );
+}, 10, 2);
+
+add_action('template_redirect', function () {
+  if (is_preview() || isset($_GET['preview'])) {
+      // Extract post ID from current query or URL params
+      $post_id = get_the_ID() 
+          ?: (isset($_GET['page_id']) ? intval($_GET['page_id']) 
+          : (isset($_GET['p']) ? intval($_GET['p']) : 0));
+
+      $post_type = get_post_type($post_id) 
+          ?: (isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : 'page');
+
+      if ($post_id) {
+          $redirect_url = sprintf(
+              '%s/preview?id=%d&type=%s',
+              untrailingslashit('https://museum.colby.edu'),
+              $post_id,
+              $post_type
+          );
+
+          wp_redirect($redirect_url);
+          exit;
+      }
+  }
+});
