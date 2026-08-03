@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
-      - uses: webfactory/ssh-agent@v0.7.0
+        uses: actions/checkout@v7
+      - uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.WEBMASTER_SSH_PRIVATE_KEY }}
 
@@ -25,7 +25,7 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/upsun/cli/main/installer.sh | bash
 
       - name: Load certificate
-        run: ~/.platformsh/bin/platform ssh-cert:load -y -vv
+        run: upsun ssh-cert:load --no-interaction
 
       - name: Add Psh to trusted keys
         continue-on-error: true
@@ -38,8 +38,8 @@ jobs:
 
       - name: Delete PR Platform Branch
         run: |
-          ~/.platformsh/bin/platform project:set-remote ${{ secrets.PLATFORM_PROJECT_ID }}
-          ~/.platformsh/bin/platform environment:delete ${GITHUB_HEAD_REF} --project=${{ secrets.PLATFORM_PROJECT_ID }} --delete-branch
+          upsun project:set-remote ${{ secrets.PLATFORM_PROJECT_ID }}
+          upsun environment:delete ${GITHUB_HEAD_REF} --project=${{ secrets.PLATFORM_PROJECT_ID }} --delete-branch
       
       - name: Clone Pages
         run: |
@@ -50,11 +50,11 @@ jobs:
           rm -rf public/lighthouse/${GITHUB_HEAD_REF}
           node ./scripts/delete_gh_pages.js --branch=${GITHUB_HEAD_REF}
           
-      - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v3
-        with:
-          target_branch: ghpages
-          build_dir: public
-        env:
-          GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
+      # - name: Deploy to GitHub Pages
+      #   if: success()
+      #   uses: crazy-max/ghaction-github-pages@v3
+      #   with:
+      #     target_branch: ghpages
+      #     build_dir: public
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}

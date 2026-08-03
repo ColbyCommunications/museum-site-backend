@@ -12,14 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
       - name: Install Upsun CLI
         run: |
           curl -fsSL https://raw.githubusercontent.com/upsun/cli/main/installer.sh | bash
           upsun project:set-remote ${{ secrets.PLATFORM_PROJECT_ID }}
 
       - name: Load certificate
-        run: ~/.platformsh/bin/platform ssh-cert:load -y -vv
+        run: upsun ssh-cert:load --no-interaction
 
       - name: Add Psh to trusted keys
         continue-on-error: true
@@ -29,4 +29,4 @@ jobs:
             ssh-keyscan $ip; \
           done 2>/dev/null >> ~/.ssh/known_hosts
           cat ~/.ssh/known_hosts
-      - run: ~/.platformsh/bin/platform redeploy -y
+      - run: upsun redeploy -y
