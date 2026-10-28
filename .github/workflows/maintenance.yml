@@ -19,7 +19,7 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/upsun/cli/main/installer.sh | bash
           upsun project:set-remote ${{ secrets.PLATFORM_PROJECT_ID }}
       - name: Load certificate
-        run: ~/.platformsh/bin/platform ssh-cert:load -y -vv
+        run: upsun ssh-cert:load --no-interaction
 
       - name: Add Psh to trusted keys
         continue-on-error: true
@@ -33,9 +33,9 @@ jobs:
       - name: Generate cypress.env.json from secret
         run: echo '${{ secrets.CYPRESS_ENV_JSON }}' > cypress.env.json
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v6
         with:
-          node-version: '20.x'
+          node-version: '24.x'
           registry-url: 'https://npm.pkg.github.com'
       - run: npm install
       - name: Run Cypress Tests

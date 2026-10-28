@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# 🛠️ This forces the underlying 'mysql/mariadb' binary to use the --skip-ssl directive
+export MYSQL_GROUP_SUFFIX="--skip-ssl"
+
 DEV_HOSTNAME=$(echo $PLATFORM_ROUTES | base64 --decode | jq 'keys[0]' | tr -d \")
 
 if [ "${PLATFORM_BRANCH}" != master ]; then
