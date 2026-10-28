@@ -50,11 +50,11 @@ jobs:
           rm -rf public/lighthouse/${GITHUB_HEAD_REF}
           node ./scripts/delete_gh_pages.js --branch=${GITHUB_HEAD_REF}
           
-      # - name: Deploy to GitHub Pages
-      #   if: success()
-      #   uses: crazy-max/ghaction-github-pages@v3
-      #   with:
-      #     target_branch: ghpages
-      #     build_dir: public
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v5
+        with:
+          target_branch: ghpages
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
