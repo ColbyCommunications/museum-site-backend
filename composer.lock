@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af8c571fbb63933afad210cbdd2c7e70",
+    "content-hash": "0e5a08dadb859b8af1a10f7bde35c603",
     "packages": [
         {
             "name": "airesvsg/acf-to-rest-api",
@@ -6681,15 +6681,15 @@
         },
         {
             "name": "wpackagist-plugin/disable-comments",
-            "version": "2.9.1",
+            "version": "2.9.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/disable-comments/",
-                "reference": "tags/2.9.1"
+                "reference": "tags/2.9.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/disable-comments.2.9.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/disable-comments.2.9.0.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -6717,15 +6717,15 @@
         },
         {
             "name": "wpackagist-plugin/filebird",
-            "version": "6.5.9",
+            "version": "6.5.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/filebird/",
-                "reference": "tags/6.5.9"
+                "reference": "tags/6.5.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/filebird.6.5.9.zip"
+                "url": "https://downloads.wordpress.org/plugin/filebird.6.5.4.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -6753,15 +6753,15 @@
         },
         {
             "name": "wpackagist-plugin/post-type-switcher",
-            "version": "4.1.1",
+            "version": "4.0.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/post-type-switcher/",
-                "reference": "tags/4.1.1"
+                "reference": "tags/4.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/post-type-switcher.4.1.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/post-type-switcher.4.0.1.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -6807,15 +6807,15 @@
         },
         {
             "name": "wpackagist-plugin/rest-api-blocks",
-            "version": "2.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/rest-api-blocks/",
-                "reference": "tags/2.0.0"
+                "reference": "tags/1.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/rest-api-blocks.2.0.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/rest-api-blocks.1.0.2.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -6897,15 +6897,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-graphql",
-            "version": "2.25.0",
+            "version": "2.6.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-graphql/",
-                "reference": "tags/2.25.0"
+                "reference": "tags/2.6.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-graphql.2.25.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-graphql.2.6.0.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -6969,15 +6969,15 @@
         },
         {
             "name": "wpackagist-plugin/wpgraphql-acf",
-            "version": "3.0.0",
+            "version": "2.4.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wpgraphql-acf/",
-                "reference": "tags/3.0.0"
+                "reference": "tags/2.4.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wpgraphql-acf.3.0.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/wpgraphql-acf.2.4.1.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"

@@ -21,7 +21,7 @@
         "colbycommunications/colby-college-theme": "3.10.5",
         "timber/timber": "2.3.1",
         "wpackagist-plugin/regenerate-thumbnails": "3.1.6",
-        "wpackagist-plugin/disable-comments": "2.9.1",
+        "wpackagist-plugin/disable-comments": "2.9.0",
         "colbycommunications/capabilities-pro": "2.53.0",
         "wpackagist-plugin/wp-nested-pages": "3.3.3",
         "wpackagist-plugin/user-switching": "1.12.2",
@@ -29,16 +29,16 @@
         "wpackagist-plugin/advanced-gutenberg": "3.7.6",
         "wpackagist-plugin/tinymce-advanced": "5.10.1",
         "colbycommunications/colby-college-theme-inertia": "1.0.21",
-        "wpackagist-plugin/filebird": "6.5.9",
+        "wpackagist-plugin/filebird": "6.5.4",
         "wpackagist-plugin/cf-images": "1.10.3",
-        "wpackagist-plugin/rest-api-blocks": "2.0.0",
+        "wpackagist-plugin/rest-api-blocks": "1.0.2",
         "colbycommunications/wp-all-import-pro": "4.10.0",
         "wpackagist-plugin/term-management-tools": "2.0.2",
         "airesvsg/acf-to-rest-api": "3.3.4",
-        "wpackagist-plugin/post-type-switcher": "4.1.1",
+        "wpackagist-plugin/post-type-switcher": "4.0.1",
         "wpackagist-plugin/cache-control": "2.2.5",
-        "wpackagist-plugin/wp-graphql": "2.25.0",
-        "wpackagist-plugin/wpgraphql-acf": "3.0.0"
+        "wpackagist-plugin/wp-graphql": "2.6.0",
+        "wpackagist-plugin/wpgraphql-acf": "2.4.1"
     },
     "authors": [
         {
