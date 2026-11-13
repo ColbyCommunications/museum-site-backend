@@ -1057,6 +1057,7 @@ function get_filtered_events( WP_REST_Request $request ) {
           $start_time = get_field( 'start_time', $id );
           $end_time   = get_field( 'end_time', $id );
           $location   = get_field( 'location', $id );
+		  $timezone = get_field( 'timezone', $id );
 
           $results[] = [
             'id'        => $id,
@@ -1072,6 +1073,7 @@ function get_filtered_events( WP_REST_Request $request ) {
                 'location'  => $location,
                 'start_time' => $start_time,
                 'end_time' => $end_time,
+			    'timezone' => $timezone,
             ],
             '_embedded' => [ 
               'wp:featuredmedia' => [ $feat_img_data, ]
